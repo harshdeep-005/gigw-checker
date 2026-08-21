@@ -101,6 +101,33 @@ Notes: (one line, optional)
 - **Never** commit directly to `main` — always via PR, even for solo work.
 - **Never** force-push to a shared branch.
 
+```markdown
+1. Before starting any work — always pull latest main first
+git checkout main
+git pull origin main
+```
+```markdown
+2. Create a branch for the specific task
+git checkout -b a/A-014-contrast-checker
+```
+```markdown
+3. Work, then commit using the format from rules.md §6
+git add .
+git commit -m "[A-014] add axe-core contrast ratio checker"
+```
+```markdown
+4. Push the branch (not main)
+git push -u origin a/A-014-contrast-checker
+```
+```markdown
+5. Open a PR on GitHub, get it merged into main
+```
+```markdown
+6. After merge, clean up locally
+git checkout main
+git pull origin main
+git branch -d a/A-014-contrast-checker
+```
 ---
 
 ## 7. Boundaries — what an agent must NOT do

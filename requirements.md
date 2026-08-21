@@ -11,7 +11,7 @@
 > document's own numbering (`5.1.1`, `5.2.14`, etc.) instead of the
 > invented `Q-01`/`A-01` scheme from v1.
 >
-> **New constraint surfaced while building this (read §6 below):** a
+> **New constraint surfaced while building this (read §7 below):** a
 > meaningful chunk of §5.3 (Cybersecurity) describes internal
 > server/code/hosting practices that are **not observable by crawling a
 > public site** at all — and a few items, if "checked" naively (e.g.
@@ -19,7 +19,7 @@
 > cross from passive auditing into active security testing. Doing that
 > against live government sites without authorization is a real legal
 > issue (unauthorized access under the IT Act), not just a scope
-> question. §6 draws this line explicitly — read it before anyone builds
+> question. §7 draws this line explicitly — read it before anyone builds
 > a Section 5.3 checker.
 
 ---
@@ -184,7 +184,7 @@ accessibility tooling — axe-core itself publishes what it can and can't catch)
 clauses, but each contains dozens of lettered sub-guidelines covering code,
 database, hosting, and container security. Most of these describe
 **server-side/internal practices that cannot be observed by crawling a
-public-facing site** — flagged clearly below. See §6 for the legal/ethical
+public-facing site** — flagged clearly below. See §7 for the legal/ethical
 boundary on what's safe to actually test.
 
 | Sub-clause | Title | Automation | Severity | Owner | Notes |
@@ -251,7 +251,7 @@ verifiable by this tool."
   (WIM's formal rank, actual "safe to host" certificate validity, permission
   agreements for reproduced content, whether stationery/ads display the URL).
 - Any active security testing beyond passive header/TLS/cookie inspection —
-  see §6. This tool produces an *indicative* cybersecurity checklist, not a
+  see §7. This tool produces an *indicative* cybersecurity checklist, not a
   certifying security audit.
 - Non-Indian-government sites (domain check assumes `.gov.in`/`.nic.in`
   family; tool is not designed for general web compliance auditing).
