@@ -1,0 +1,157 @@
+// Prisma schema for gigw-checker.
+// Data shapes mirror schema.md exactly — keep in sync.
+// Run `npm run db:generate` after any change.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── schema.md §1: ClauseDefinition ─────────────────────────────────────────
+
+enum ClauseCategory {
+  quality
+  accessibility
+  cybersecurity
+  lifecycle
+}
+
+enum ClauseAutomation {
+  automatable
+  semi_automatable
+  manual_only
+}
+
+model ClauseDefinition {
+  clauseId    String           @id            // e.g. "5.1.7"
+  section     ClauseCategory
+  title       String
+  description String
+  automation  ClauseAutomation
+  ownerMember String           @db.Char(1)   // "A" or "B"
+  checkerId   String?                         // null if manual-only
+  results     CheckerResult[]
+
+  @@map("clause_definitions")
+}
+
+// ── schema.md §2: CheckerResult ────────────────────────────────────────────
+
+enum CheckStatus {
+  pass
+  fail
+  needs_review
+  not_applicable
+}
+
+enum Severity {
+  high
+  medium
+  low
+}
+
+model CheckerResult {
+  id         String    @id @default(cuid())
+  clauseId   String
+  clause     ClauseDefinition @relation(fields: [clauseId], references: [clauseId])
+  pageUrl    String
+  status     CheckStatus
+  severity   Severity
+  evidence   String
+  detail     Json?
+  checkedAt  DateTime
+
+  pageReport   PageReport? @relation(fields: [pageReportId], references: [id])
+  pageReportId String?
+
+  @@map("checker_results")
+}
+
+// ── schema.md §4: Route ────────────────────────────────────────────────────
+
+enum RouteStatus {
+  pending
+  crawled
+  error
+  skipped
+}
+
+model Route {
+  id              String      @id @default(cuid())
+  url             String
+  depth           Int
+  discoveredFrom  String?
+  status          RouteStatus @default(pending)
+  httpStatus      Int?
+  crawledAt       DateTime?
+  jobId           String
+  job             CrawlJob    @relation(fields: [jobId], references: [id])
+
+  @@unique([jobId, url])
+  @@map("routes")
+}
+
+// ── schema.md §5: PageReport ───────────────────────────────────────────────
+
+model PageReport {
+  id             String          @id @default(cuid())
+  pageUrl        String
+  score          Float
+  passCount      Int
+  failCount      Int
+  needsReview    Int
+  notApplicable  Int
+  results        CheckerResult[]
+  siteReport     SiteReport      @relation(fields: [siteReportId], references: [id])
+  siteReportId   String
+
+  @@map("page_reports")
+}
+
+// ── schema.md §6: SiteReport ───────────────────────────────────────────────
+
+model SiteReport {
+  id                    String       @id @default(cuid())
+  siteUrl               String
+  crawlStartedAt        DateTime
+  crawlFinishedAt       DateTime?
+  totalRoutesDiscovered Int          @default(0)
+  totalRoutesChecked    Int          @default(0)
+  overallScore          Float?
+  scoreQuality          Float?
+  scoreAccessibility    Float?
+  scoreCybersecurity    Float?
+  scoreLifecycle        Float?
+  pages                 PageReport[]
+  job                   CrawlJob     @relation(fields: [jobId], references: [id])
+  jobId                 String       @unique
+
+  @@map("site_reports")
+}
+
+// ── CrawlJob (ties everything together) ────────────────────────────────────
+
+enum JobStatus {
+  queued
+  crawling
+  checking
+  aggregating
+  done
+  failed
+}
+
+model CrawlJob {
+  id         String     @id @default(cuid())
+  seedUrl    String
+  status     JobStatus  @default(queued)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  routes     Route[]
+  report     SiteReport?
+
+  @@map("crawl_jobs")
+}
