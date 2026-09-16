@@ -1,36 +1,25 @@
-# Dependencies
-node_modules/
-.pnpm-store/
+# Merged from root + nested gigw-checker/ during structure fix
 
-# Build output
-dist/
-build/
-.next/
-out/
-
-# Env files - never commit secrets
-.env
-.env.local
-.env.*.local
-
-# Logs
+!.env.example
+*.d.ts.map
+*.js.map
 *.log
-npm-debug.log*
-
-# OS
 .DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
+.env
+.env.*
+.env.*.local
+.env.local
 .idea/
-
-# Prisma
-packages/db/generated/
-
-# Test coverage
+.next/
+.pnpm-store/
+.vscode/
+Thumbs.db
+build/
 coverage/
-
-# Playwright
-test-results/
+dist/
+node_modules/
+npm-debug.log*
+out/
+packages/db/generated/
 playwright-report/
+test-results/
