@@ -12,7 +12,7 @@
     "format": "prettier --write \"packages/*/src/**/*.ts\" \"apps/*/src/**/*.ts\"",
     "format:check": "prettier --check \"packages/*/src/**/*.ts\" \"apps/*/src/**/*.ts\"",
     "test": "vitest run",
-    "typecheck": "tsc --build --noEmit"
+    "typecheck": "tsc --build"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "8.4.0",
