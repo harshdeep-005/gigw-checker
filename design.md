@@ -27,8 +27,8 @@
    ┌───────────────────────────────────────────────────────────┐
    │              Checker Engine (Playwright + axe-core)         │
    │  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐    │
-   │  │ Quality (C)    │ │ Accessibility(A)│ │ Cybersecurity(B)│  │
-   │  │ + Lifecycle (C)│ │  checkers      │ │  checkers      │    │
+   │  │ Quality (B)    │ │ Accessibility(A)│ │ Cybersecurity(A)│  │
+   │  │ + Lifecycle (B)│ │  checkers      │ │  checkers      │    │
    │  └───────────────┘ └───────────────┘ └───────────────┘    │
    └───────────────────────────┬───────────────────────────────┘
                                 │ CheckerResult[] per page
@@ -126,7 +126,7 @@ separate folders, minimizing file-level git conflicts.
   matching `schema.md`, reducing manual type-sync work.
 - **Monorepo:** all three members' domains, shared scaffolding, and
   planning docs live in one repo — simpler dependency management for a
-  3-person team, and `schema.md`/`brain/`/`tasks/` are naturally visible
+  2-person team, and `schema.md`/`brain/`/`tasks/` are naturally visible
   to everyone without cross-repo lookups.
 
 ---
