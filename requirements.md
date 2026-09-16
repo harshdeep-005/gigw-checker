@@ -90,31 +90,31 @@ This feeds the scoring formula in `schema.md` §6
 
 | Clause ID | Title | Automation | Severity | Owner | Notes |
 |---|---|---|---|---|---|
-| 5.1.1 | State Emblem/logo on homepage, proper ratio/colour, alt text | semi | medium | C | logo presence + alt-text check automatable; correct ratio/colour needs visual/manual check |
-| 5.1.2 | Ownership info on homepage + entry pages | automatable | medium | C | text/footer presence check |
-| 5.1.3 | Source cited for reproduced documents | manual-only | low | C | requires knowing provenance of content, not observable from page alone |
-| 5.1.4 | Due permission obtained for copyrighted content | manual-only | high | C | organizational fact |
-| 5.1.5 | Last updated/reviewed date shown | automatable | low | C | date-pattern detection near footer/header |
-| 5.1.6 | Downloadable material: title, size, format, instructions | semi | low | C | presence of metadata text automatable; accuracy manual |
-| 5.1.7 | Circulars/notifications/forms/schemes: title, language, purpose, validity listed | semi | medium | C | structured field presence automatable; completeness/accuracy manual |
-| 5.1.8 | Outdated content removed or archived | semi | medium | C | can flag stale-dated items past a threshold; true archival-policy compliance manual |
-| 5.1.9 | "About Us" section present and current | semi | low | C | presence automatable; "kept up to date" manual |
-| 5.1.10 | "Contact Us" page with complete details, linked from homepage | automatable | medium | C | link + content presence check |
-| 5.1.11 | Feedback collected via online forms, timely response process | semi | low | C | form presence automatable; "timely response" manual |
-| 5.1.12 | Prominent link to National Portal (india.gov.in), opens in new window | automatable | low | C | link + `target="_blank"` check |
-| 5.1.13 | Multi-browser tested; Hindi/regional fonts render without layout loss | manual-only | medium | C | requires actual cross-browser/font visual testing |
-| 5.1.14 | Help section, linked from all pages, consistent location | semi | low | C | link presence per-page automatable; "consistent location" needs layout comparison |
-| 5.1.15 | CSS-based layout + responsive design | automatable | medium | C | external stylesheet usage + viewport meta + media queries |
-| 5.1.16 | Content readable with style sheets off | semi | medium | C | can render with CSS disabled and diff for lost content, but judging "readability" is partly manual |
-| 5.1.17 | Page title, `lang` attribute, metadata (keywords/description) | automatable | medium | C | HTML head parsing |
-| 5.1.18 | Minimum prescribed content on homepage + subsequent pages | automatable | high | C | checklist of required links/elements per §5.1.18 |
-| 5.1.19 | Data table markup (row/column headers, associated cells) | automatable | medium | C | `<th>`, `scope`, `caption`, header association parsing |
-| 5.1.20 | Content prints correctly on A4 | semi | low | C | `@media print` stylesheet presence automatable; visual correctness manual |
-| 5.1.21 | Official domain (`.gov.in`/`.nic.in`, or `.edu.in`/`.res.in`/`.ac.in` for eligible institutions) | automatable | high | C | domain string check |
-| 5.1.22 | API integration with India Portal, DigiLocker, Aadhaar, SSO, MyGov, MyScheme, Data Platform | semi | medium | C | presence of integration links/widgets only — functional integration can't be verified by crawling |
-| 5.1.23 | Consistent UX/visual identity across the organisation's websites/apps | manual-only | low | C | requires comparing across multiple separate properties/organisational judgment |
-| 5.1.24 | Two-way social media integration | automatable | low | C | link/widget/embed presence check |
-| 5.1.25 | Content free from spelling/grammatical errors | semi | low | C | LanguageTool-style API gives heuristic flags, not authoritative judgment |
+| 5.1.1 | State Emblem/logo on homepage, proper ratio/colour, alt text | semi | medium | B | logo presence + alt-text check automatable; correct ratio/colour needs visual/manual check |
+| 5.1.2 | Ownership info on homepage + entry pages | automatable | medium | B | text/footer presence check |
+| 5.1.3 | Source cited for reproduced documents | manual-only | low | B | requires knowing provenance of content, not observable from page alone |
+| 5.1.4 | Due permission obtained for copyrighted content | manual-only | high | B | organizational fact |
+| 5.1.5 | Last updated/reviewed date shown | automatable | low | B | date-pattern detection near footer/header |
+| 5.1.6 | Downloadable material: title, size, format, instructions | semi | low | B | presence of metadata text automatable; accuracy manual |
+| 5.1.7 | Circulars/notifications/forms/schemes: title, language, purpose, validity listed | semi | medium | B | structured field presence automatable; completeness/accuracy manual |
+| 5.1.8 | Outdated content removed or archived | semi | medium | B | can flag stale-dated items past a threshold; true archival-policy compliance manual |
+| 5.1.9 | "About Us" section present and current | semi | low | B | presence automatable; "kept up to date" manual |
+| 5.1.10 | "Contact Us" page with complete details, linked from homepage | automatable | medium | B | link + content presence check |
+| 5.1.11 | Feedback collected via online forms, timely response process | semi | low | B | form presence automatable; "timely response" manual |
+| 5.1.12 | Prominent link to National Portal (india.gov.in), opens in new window | automatable | low | B | link + `target="_blank"` check |
+| 5.1.13 | Multi-browser tested; Hindi/regional fonts render without layout loss | manual-only | medium | B | requires actual cross-browser/font visual testing |
+| 5.1.14 | Help section, linked from all pages, consistent location | semi | low | B | link presence per-page automatable; "consistent location" needs layout comparison |
+| 5.1.15 | CSS-based layout + responsive design | automatable | medium | B | external stylesheet usage + viewport meta + media queries |
+| 5.1.16 | Content readable with style sheets off | semi | medium | B | can render with CSS disabled and diff for lost content, but judging "readability" is partly manual |
+| 5.1.17 | Page title, `lang` attribute, metadata (keywords/description) | automatable | medium | B | HTML head parsing |
+| 5.1.18 | Minimum prescribed content on homepage + subsequent pages | automatable | high | B | checklist of required links/elements per §5.1.18 |
+| 5.1.19 | Data table markup (row/column headers, associated cells) | automatable | medium | B | `<th>`, `scope`, `caption`, header association parsing |
+| 5.1.20 | Content prints correctly on A4 | semi | low | B | `@media print` stylesheet presence automatable; visual correctness manual |
+| 5.1.21 | Official domain (`.gov.in`/`.nic.in`, or `.edu.in`/`.res.in`/`.ac.in` for eligible institutions) | automatable | high | B | domain string check |
+| 5.1.22 | API integration with India Portal, DigiLocker, Aadhaar, SSO, MyGov, MyScheme, Data Platform | semi | medium | B | presence of integration links/widgets only — functional integration can't be verified by crawling |
+| 5.1.23 | Consistent UX/visual identity across the organisation's websites/apps | manual-only | low | B | requires comparing across multiple separate properties/organisational judgment |
+| 5.1.24 | Two-way social media integration | automatable | low | B | link/widget/embed presence check |
+| 5.1.25 | Content free from spelling/grammatical errors | semi | low | B | LanguageTool-style API gives heuristic flags, not authoritative judgment |
 
 ## 5. GIGW 3.0 Clause Coverage Table — Section 5.2 (Accessibility) — 50 clauses, WCAG 2.1 AA
 
@@ -184,26 +184,26 @@ accessibility tooling — axe-core itself publishes what it can and can't catch)
 clauses, but each contains dozens of lettered sub-guidelines covering code,
 database, hosting, and container security. Most of these describe
 **server-side/internal practices that cannot be observed by crawling a
-public-facing site** — flagged clearly below. See §6 for the legal/ethical
+public-facing site** — flagged clearly below. See §7 for the legal/ethical
 boundary on what's safe to actually test.
 
 | Sub-clause | Title | Automation | Severity | Owner | Notes |
 |---|---|---|---|---|---|
-| 5.3.1 (top-level) | Security Audit Clearance certificate (NIC/STQC/CERT-In empanelled) | manual-only | high | B | external audit artifact, not derivable from the site itself |
-| 5.3.1-code-headers | HTTP response headers obscured (no server/version disclosure) | automatable | medium | B | passive header inspection |
-| 5.3.1-code-cookies | Cookies are Secure + HttpOnly | automatable | high | B | passive `Set-Cookie` header inspection |
-| 5.3.1-code-errors | Custom error pages (no stack trace/source exposure) | semi | high | B | trigger a natural 404 (not exploit-style probing) and inspect response — see §7 boundary |
-| 5.3.1-code-tls-comms | 3rd-party/API comms encrypted | semi | high | B | detectable only for calls visible in page network traffic |
-| 5.3.1-code-mfa | MFA / password policy on login | manual-only | high | B | cannot verify without authenticated access |
-| 5.3.1-code-* (remaining items: directory traversal, renamed default admin paths, root-user process, RBAC, secure coding checklist, logging) | — | manual-only | high | B | internal server/code configuration, not externally observable at all — **do not attempt to probe these actively (see §7)** |
-| 5.3.1-db-* (all database security items) | — | manual-only | high | B | entirely internal, not observable externally under any circumstances |
-| 5.3.2 (top-level) | Hosting environment secured (CIA) | manual-only | high | B | requires HSP/data-centre-level information not visible from the site |
-| 5.3.2-tls | Valid SSL/TLS certificate, ≥2048-bit SHA-256 | automatable | high | B | certificate inspection |
-| 5.3.2-https | HTTPS enforced, HTTP disabled, HSTS present | automatable | high | B | protocol + header check |
-| 5.3.2-ciphers | Weak protocols/ciphers disabled (SSLv2/v3, 3DES, RC4, TLS 1.0/1.1) | automatable | high | B | TLS handshake capability scan (passive, standards-based — e.g. same approach as SSL Labs) |
-| 5.3.2-waf | Web Application Firewall present | semi | medium | B | inferable from response headers/behavior patterns, not certain |
-| 5.3.2-hosting-location, DR drills, container security, etc. | — | manual-only | medium | B | organisational/infrastructure facts, not observable via crawling |
-| 5.3.3 | Security Policy, Privacy Policy, Contingency Plan defined & published | semi | medium | B | presence of policy *pages* automatable; whether they're actually approved/complete is manual |
+| 5.3.1 (top-level) | Security Audit Clearance certificate (NIC/STQC/CERT-In empanelled) | manual-only | high | A | external audit artifact, not derivable from the site itself |
+| 5.3.1-code-headers | HTTP response headers obscured (no server/version disclosure) | automatable | medium | A | passive header inspection |
+| 5.3.1-code-cookies | Cookies are Secure + HttpOnly | automatable | high | A | passive `Set-Cookie` header inspection |
+| 5.3.1-code-errors | Custom error pages (no stack trace/source exposure) | semi | high | A | trigger a natural 404 (not exploit-style probing) and inspect response — see §7 boundary |
+| 5.3.1-code-tls-comms | 3rd-party/API comms encrypted | semi | high | A | detectable only for calls visible in page network traffic |
+| 5.3.1-code-mfa | MFA / password policy on login | manual-only | high | A | cannot verify without authenticated access |
+| 5.3.1-code-* (remaining items: directory traversal, renamed default admin paths, root-user process, RBAC, secure coding checklist, logging) | — | manual-only | high | A | internal server/code configuration, not externally observable at all — **do not attempt to probe these actively (see §7)** |
+| 5.3.1-db-* (all database security items) | — | manual-only | high | A | entirely internal, not observable externally under any circumstances |
+| 5.3.2 (top-level) | Hosting environment secured (CIA) | manual-only | high | A | requires HSP/data-centre-level information not visible from the site |
+| 5.3.2-tls | Valid SSL/TLS certificate, ≥2048-bit SHA-256 | automatable | high | A | certificate inspection |
+| 5.3.2-https | HTTPS enforced, HTTP disabled, HSTS present | automatable | high | A | protocol + header check |
+| 5.3.2-ciphers | Weak protocols/ciphers disabled (SSLv2/v3, 3DES, RC4, TLS 1.0/1.1) | automatable | high | A | TLS handshake capability scan (passive, standards-based — e.g. same approach as SSL Labs) |
+| 5.3.2-waf | Web Application Firewall present | semi | medium | A | inferable from response headers/behavior patterns, not certain |
+| 5.3.2-hosting-location, DR drills, container security, etc. | — | manual-only | medium | A | organisational/infrastructure facts, not observable via crawling |
+| 5.3.3 | Security Policy, Privacy Policy, Contingency Plan defined & published | semi | medium | A | presence of policy *pages* automatable; whether they're actually approved/complete is manual |
 
 ## 7. Cybersecurity checking — scope boundary (read before building any 5.3 checker)
 
@@ -234,16 +234,16 @@ verifiable by this tool."
 
 | Clause ID | Title | Automation | Severity | Owner | Notes |
 |---|---|---|---|---|---|
-| 5.4.1 | Web Information Manager (WIM) nominated, contact details displayed | semi | medium | C | WIM contact-details presence on site automatable; actual formal nomination (JS-rank official) is manual |
-| 5.4.2 | Website URL on all organisational stationery/publicity material | manual-only | low | C | concerns physical/external materials, not the website itself |
-| 5.4.3 | Copyright, CMAP, CAP, CRP, Hyperlinking, T&C, Monitoring Plan policies defined | semi | medium | C | presence of policy pages automatable; WIM-approval status is manual |
-| 5.4.4 | Hyperlink accuracy checked; external links clearly indicated | semi | medium | C | can detect external-link indicators (icon/new-tab attribute); content accuracy is manual |
-| 5.4.5 | Content free of offensive/discriminatory language | semi | high | C | toxicity/content-moderation API gives heuristic flags only, not authoritative |
-| 5.4.6 | Multi-language versions updated simultaneously | semi | medium | C | comparable only if per-language "last updated" timestamps exist; true sync is manual |
-| 5.4.7 | No broken links (internal or external) | automatable | medium | C | standard link-checker crawl |
-| 5.4.8 | No "under construction" pages | automatable | low | C | text-pattern detection ("under construction", "coming soon", etc.) |
-| 5.4.9 | Documents provided in HTML or accessible formats (not scanned-image-only PDFs) | semi | medium | C | file-type detection automatable; whether a PDF is properly tagged/accessible needs a dedicated PDF accessibility checker (potential Phase 4 enhancement) |
-| 5.4.10 | Bilingual, prominent language selector, Unicode characters used | automatable | medium | C | language-switch UI detection + charset/encoding check |
+| 5.4.1 | Web Information Manager (WIM) nominated, contact details displayed | semi | medium | B | WIM contact-details presence on site automatable; actual formal nomination (JS-rank official) is manual |
+| 5.4.2 | Website URL on all organisational stationery/publicity material | manual-only | low | B | concerns physical/external materials, not the website itself |
+| 5.4.3 | Copyright, CMAP, CAP, CRP, Hyperlinking, T&C, Monitoring Plan policies defined | semi | medium | B | presence of policy pages automatable; WIM-approval status is manual |
+| 5.4.4 | Hyperlink accuracy checked; external links clearly indicated | semi | medium | B | can detect external-link indicators (icon/new-tab attribute); content accuracy is manual |
+| 5.4.5 | Content free of offensive/discriminatory language | semi | high | B | toxicity/content-moderation API gives heuristic flags only, not authoritative |
+| 5.4.6 | Multi-language versions updated simultaneously | semi | medium | B | comparable only if per-language "last updated" timestamps exist; true sync is manual |
+| 5.4.7 | No broken links (internal or external) | automatable | medium | B | standard link-checker crawl |
+| 5.4.8 | No "under construction" pages | automatable | low | B | text-pattern detection ("under construction", "coming soon", etc.) |
+| 5.4.9 | Documents provided in HTML or accessible formats (not scanned-image-only PDFs) | semi | medium | B | file-type detection automatable; whether a PDF is properly tagged/accessible needs a dedicated PDF accessibility checker (potential Phase 4 enhancement) |
+| 5.4.10 | Bilingual, prominent language selector, Unicode characters used | automatable | medium | B | language-switch UI detection + charset/encoding check |
 
 ## 9. Out of scope (explicitly, to prevent scope creep)
 

@@ -21,7 +21,7 @@ interface ClauseDefinition {
   title: string;              // short human label, e.g. "Official domain usage"
   description: string;        // paraphrased guideline text
   automation: ClauseAutomation;
-  ownerMember: "A" | "B" | "C";
+  ownerMember: "A" | "B";
   checkerId: string | null;   // links to a CheckerModule; null if manual-only
 }
 ```

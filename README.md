@@ -18,9 +18,8 @@ Before touching any code, read (in this order):
 
 ## Team
 
-- Member A — Accessibility (§5.2)
-- Member B — Cybersecurity (§5.3)
-- Member C — Quality + Lifecycle (§5.1, §5.4)
+- Member A — Accessibility (§5.2) + Cybersecurity (§5.3)
+- Member B — Quality (§5.1) + Lifecycle (§5.4)
 
 ## Status
 

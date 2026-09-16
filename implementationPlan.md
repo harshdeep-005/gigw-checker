@@ -1,17 +1,30 @@
 # implementationPlan.md — Timeline & Phases
 
 Covers *when* things happen. For *what* and *how*, see `requirements.md`
-and `design.md`. Team: 3 members (A: Accessibility, B: Cybersecurity,
-C: Quality + Lifecycle). Duration: 6 months (~26 weeks).
+and `design.md`. Team: 2 members (A: Accessibility + Cybersecurity,
+B: Quality + Lifecycle). Duration: 6 months (~26 weeks), scope and
+timeline both held fixed after the team went from 3 to 2 — see the note
+below.
+
+> **Team-size note:** this plan was originally built for 3 members split
+> evenly across 4 GIGW sections. With 2 members, Member A now owns two
+> sections (5.2 + 5.3) instead of one. This is workable because §5.3's
+> real checker workload is small — most of its clauses are `manual-only`
+> per `requirements.md` §7's legal boundary, so there's less actual code
+> there than the clause count suggests. Even so, A has a heavier build
+> load than B. The team chose to keep scope and timeline both fixed
+> rather than trim scope or extend the timeline — worth revisiting at
+> the Phase 1 exit checkpoint if A is visibly behind, since there's no
+> built-in slack to absorb it.
 
 ---
 
 ## Phase 0 — Weeks 1-2: Requirements mapping & scaffolding decisions
 
-**Together, all 3 members:**
+**Together, both members:**
 - Obtain full GIGW 3.0 PDF; expand clause tables for 5.2/5.3/5.4 in
   `requirements.md` (currently flagged TODO)
-- Finalize crawl scope decision (`design.md` §5)
+- Finalize crawl scope decision (`design.md` §6)
 - Finalize scoring formula (`schema.md` §6)
 - Freeze `schema.md` v1.0
 - Set up monorepo, `docker-compose.yml`, CI skeleton (lint + test on PR)
@@ -24,29 +37,34 @@ sections, repo runs locally via `docker compose up`.
 
 ## Phase 1 — Weeks 3-6: Core infra
 
-- **Shared (all 3):** crawler core (BFS/DFS, robots.txt, depth/page cap),
+- **Shared (both):** crawler core (BFS/DFS, robots.txt, depth/page cap),
   BullMQ job wiring, Fastify API skeleton, Prisma schema + migrations,
   dashboard shell (nav, routing, layout, no real data yet — mock `SiteReport`)
 - **Member A:** scaffold `packages/checkers/accessibility/`, get axe-core
-  running inside a Playwright page as a proof of concept
-- **Member B:** scaffold `packages/checkers/cybersecurity/`, get header/TLS
-  inspection working as a proof of concept
-- **Member C:** scaffold `packages/checkers/quality-lifecycle/`, get domain
-  + metadata checks working as a proof of concept
+  running inside a Playwright page as a proof of concept. Start on
+  `packages/checkers/cybersecurity/` scaffolding only after the
+  accessibility proof-of-concept works — don't split attention across
+  both domains simultaneously this early.
+- **Member B:** scaffold `packages/checkers/quality-lifecycle/`, get
+  domain + metadata checks working as a proof of concept
 
 **Exit criteria:** crawler can discover routes on a real site; each member
 has at least one working checker returning real `CheckerResult`s.
+**Checkpoint:** if A hasn't started on cybersecurity scaffolding by the
+end of this phase, flag it in `brain/member-a.md` — this is the first
+real signal on whether the fixed timeline is holding.
 
 ---
 
 ## Phase 2 — Weeks 7-14: Checker development (main build phase)
 
-- **Member A:** build out all Section 5.2 checkers per the clause table,
-  wire axe-core results into `CheckerResult` format, build accessibility
-  dashboard view
-- **Member B:** build out all Section 5.3 checkers, wire OWASP-lite scan +
-  header/TLS checks, build cybersecurity dashboard view
-- **Member C:** build out all Section 5.1 + 5.4 checkers, build scoring/
+- **Member A:** build out all Section 5.2 (Accessibility) checkers first —
+  this is the larger of A's two domains and shares infrastructure
+  (Playwright + axe-core) across most of its clauses. Once 5.2's
+  automatable/semi clauses are solid, move to Section 5.3 (Cybersecurity)
+  — header/TLS/cookie inspection per `requirements.md` §7's passive-only
+  boundary. Build both domains' dashboard views as each domain completes.
+- **Member B:** build out all Section 5.1 + 5.4 checkers, build scoring/
   aggregation service (`packages/aggregation/`), build quality/lifecycle
   dashboard view
 
