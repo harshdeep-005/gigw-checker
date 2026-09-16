@@ -1,0 +1,21 @@
+{
+  "name": "@gigw/report-pdf",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "playwright": "1.46.1",
+    "@gigw/db": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "vitest": "*"
+  }
+}

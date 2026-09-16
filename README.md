@@ -23,4 +23,5 @@ Before touching any code, read (in this order):
 
 ## Status
 
-Phase 0 (planning docs) complete. Repo scaffolding in progress.
+Phase 0 — planning docs complete, tasks and brain logs initialised (2026-08-21).
+Next: monorepo scaffold (A-003 / shared) — waiting on both members to confirm readiness.
