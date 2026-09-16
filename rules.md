@@ -15,8 +15,8 @@ Before writing or editing any code, an agent must read, in this order:
 3. `design.md` — system architecture
 4. `requirements.md` — what must be built (includes the GIGW clause table)
 5. `implementationPlan.md` — current phase / timeline
-6. **All** files in `brain/` (`brain/member-a.md`, `brain/member-b.md`,
-   `brain/member-c.md`) — to understand what the other two members have
+6. **Both** files in `brain/` (`brain/member-a.md`, `brain/member-b.md`) —
+   to understand what the other member has
    done, decided, or are blocked on
 7. Its own `tasks/member-{x}.md` — to know what it's currently assigned
 
@@ -84,7 +84,7 @@ Notes: (one line, optional)
   `kebab-case` for file names except React components (`PascalCase.tsx`).
 - **No `any`** — if a type is genuinely unknown, use `unknown` and narrow it.
 - **Checker functions** must conform exactly to the `Checker` interface in
-  `schema.md` — this is what keeps the three members' checkers pluggable and
+  `schema.md` — this is what keeps both members' checkers pluggable and
   conflict-free.
 - **Every checker module lives in its own file**, one clause-group per file,
   under `packages/checkers/{domain}/`.

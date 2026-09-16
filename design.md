@@ -60,10 +60,10 @@
 | Component | Responsibility | Owner |
 |---|---|---|
 | **API** | Accept a site URL, validate it, create a crawl job, expose endpoints for polling status + fetching `SiteReport` | Shared scaffolding (built together, Week 1-2) |
-| **Crawler** | BFS/DFS crawl from seed URL, same-domain only, respects `robots.txt`, depth-capped, writes discovered `Route`s to DB | Shared scaffolding, then Member A extends for edge cases (auth walls, infinite scroll) |
+| **Crawler** | BFS/DFS crawl from seed URL, same-domain only, respects `robots.txt`, depth-capped, writes discovered `Route`s to DB | Shared scaffolding, then either member extends for edge cases (auth walls, infinite scroll) |
 | **Job Queue** | Decouples crawl + check work from HTTP request/response; retries failed page loads | Shared scaffolding |
 | **Checker Engine** | Runs all applicable `CheckerModule`s against a rendered page, collects `CheckerResult[]` | Each member plugs in their own domain's checkers against the shared `Checker` interface (`schema.md` §3) |
-| **Aggregation service** | Computes `PageReport` and `SiteReport` from raw `CheckerResult`s per the scoring formula | Member C (owns scoring logic as part of Quality/Lifecycle domain) initially, reviewed by all |
+| **Aggregation service** | Computes `PageReport` and `SiteReport` from raw `CheckerResult`s per the scoring formula | Member B (owns scoring logic as part of Quality/Lifecycle domain) initially, reviewed by both |
 | **Dashboard** | Site-wide + per-page score visualization, manual-review checklist, drill-down by clause | Shared shell (Week 1-2), then each member adds their domain's result-visualization component |
 | **PDF Report** | Renders a report page, prints to PDF via Playwright | Shared scaffolding |
 
@@ -80,12 +80,10 @@ gigw-checker/
 ├── implementationPlan.md
 ├── brain/
 │   ├── member-a.md
-│   ├── member-b.md
-│   └── member-c.md
+│   └── member-b.md
 ├── tasks/
 │   ├── member-a.md
-│   ├── member-b.md
-│   └── member-c.md
+│   └── member-b.md
 ├── packages/
 │   ├── crawler/              # shared
 │   ├── queue/                # shared
@@ -93,16 +91,16 @@ gigw-checker/
 │   ├── db/                   # Prisma schema + migrations, shared
 │   ├── checkers/
 │   │   ├── accessibility/    # Member A
-│   │   ├── cybersecurity/    # Member B
-│   │   └── quality-lifecycle/ # Member C
-│   ├── aggregation/          # Member C initially, shared review
+│   │   ├── cybersecurity/    # Member A
+│   │   └── quality-lifecycle/ # Member B
+│   ├── aggregation/          # Member B initially, shared review
 │   └── report-pdf/           # shared
 ├── apps/
 │   └── dashboard/
 │       ├── shell/            # shared nav, layout, routing
 │       ├── accessibility/    # Member A's view components
-│       ├── cybersecurity/    # Member B's view components
-│       └── quality-lifecycle/ # Member C's view components
+│       ├── cybersecurity/    # Member A's view components
+│       └── quality-lifecycle/ # Member B's view components
 └── docker-compose.yml
 ```
 
@@ -135,7 +133,7 @@ separate folders, minimizing file-level git conflicts.
 
 ## 5. Cybersecurity checker constraint — passive only
 
-Member B's checker package (`packages/checkers/cybersecurity/`) must only
+Member A's checker package (`packages/checkers/cybersecurity/`) must only
 perform passive inspection: HTTP headers, TLS/certificate handshake info,
 cookie flags, and observing a natural 404 page. **No active
 scanning/exploit techniques of any kind** (no admin-path probing, no
