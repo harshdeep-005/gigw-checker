@@ -7,7 +7,7 @@ import { NotFoundPage } from "./shell/NotFoundPage.js";
  * Domain-specific view components (accessibility/, cybersecurity/,
  * quality-lifecycle/) are lazy-loaded once built (Phase 2).
  */
-export function App(): JSX.Element {
+export function App(): React.JSX.Element {
   return (
     <BrowserRouter>
       <header role="banner" style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>

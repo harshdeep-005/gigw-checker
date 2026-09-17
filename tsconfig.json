@@ -1,0 +1,17 @@
+{
+  // Root tsconfig for `tsc --build` (project references).
+  // Does not compile anything directly — just orchestrates all packages.
+  // Each package's own tsconfig.json defines what it compiles.
+  "files": [],
+  "references": [
+    { "path": "packages/db" },
+    { "path": "packages/crawler" },
+    { "path": "packages/queue" },
+    { "path": "packages/api" },
+    { "path": "packages/aggregation" },
+    { "path": "packages/report-pdf" },
+    { "path": "packages/checkers/accessibility" },
+    { "path": "packages/checkers/cybersecurity" },
+    { "path": "packages/checkers/quality-lifecycle" }
+  ]
+}

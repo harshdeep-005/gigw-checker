@@ -1,6 +1,7 @@
 # Tasks — Member A
 
 See rules.md for the task entry format and ID convention.
+Task IDs are permanent — never reuse or renumber.
 
 ---
 
@@ -8,87 +9,87 @@ See rules.md for the task entry format and ID convention.
 Status: done
 Date: 2026-08-21
 Depends on: —
-Notes: requirements.md, design.md, schema.md, implementationPlan.md, rules.md all read and cross-references verified clean.
+Notes: requirements.md, design.md, schema.md, implementationPlan.md, rules.md all read and cross-references verified clean. §6→§7 stale references fixed. 3-member→2-member ownership updates confirmed.
 
 ---
 
-### [A-002] Populate tasks/member-a.md with Phase 0 + Phase 1 tasks
+### [A-002] Populate tasks/member-a.md with initial task list
 Status: done
 Date: 2026-08-21
 Depends on: A-001
-Notes: This file.
+Notes: This file. Rewritten after discovering monorepo was already scaffolded further than expected.
 
 ---
 
-### [A-003] Scaffold monorepo root (package.json, tsconfig base, .eslintrc, .prettierrc, docker-compose.yml, CI skeleton)
+### [A-003] Scaffold monorepo root
 Status: done
 Date: 2026-08-21
-Depends on: A-001, B confirms ready to start
-Notes: Created gigw-checker/ root — package.json (npm workspaces), tsconfig.base.json (strict TS), eslint.config.js (flat ESLint 9 + typescript-eslint strictTypeChecked), .prettierrc, .gitignore, docker-compose.yml (postgres 16 + redis 7 + api service), .env.example, .github/workflows/ci.yml (lint + format:check + typecheck + test on PR).
+Depends on: A-001
+Notes: package.json (workspaces), tsconfig.base.json, eslint.config.js, .prettierrc, docker-compose.yml, .gitignore, .env.example, CI skeleton (.github/workflows/ci.yml) all present.
 
 ---
 
-### [A-004] Set up shared packages scaffold (crawler, queue, api, db)
-Status: done
-Date: 2026-08-21
-Depends on: A-003
-Notes: crawler (Playwright dep, CrawlOptions/CrawlResult types), queue (BullMQ + ioredis, typed job payloads), api (Fastify, /health stub + Dockerfile), db (Prisma schema mirroring schema.md §1-6 exactly — ClauseDefinition, CheckerResult, Route, PageReport, SiteReport, CrawlJob + singleton prisma client export). Also created: aggregation (computePageScore() fully implemented with unit tests, SEVERITY_WEIGHTS), report-pdf (PdfGenerationOptions stub), checker stubs for all three domains.
-
----
-
-### [A-005] Set up dashboard shell (nav, routing, layout, mock SiteReport)
+### [A-004] Scaffold shared packages (crawler, queue, api, db, aggregation, report-pdf)
 Status: done
 Date: 2026-08-21
 Depends on: A-003
-Notes: Vite + React 18 + react-router-dom. App.tsx shell with BrowserRouter, header nav, main landmark. HomePage and NotFoundPage stubs. Domain stub folders (accessibility/, cybersecurity/, quality-lifecycle/) reserved with .gitkeep. URL submission form and report routing marked as Phase 1 TODOs.
+Notes: All packages under packages/ stubbed with package.json + src/index.ts + tsconfig.json.
+
+---
+
+### [A-005] Scaffold dashboard shell
+Status: done
+Date: 2026-08-21
+Depends on: A-003
+Notes: apps/dashboard/ exists with Vite + React setup, src/shell/, src/accessibility/, src/cybersecurity/, src/quality-lifecycle/ directories present.
 
 ---
 
 ### [A-006] Scaffold packages/checkers/accessibility/
-Status: todo
+Status: done
 Date: 2026-08-21
-Depends on: A-003, schema.md v1.1 (frozen)
-Notes: Create folder structure + index.ts exporting CheckerModule stubs. Install axe-core + @axe-core/playwright. Proof-of-concept: one real checker running inside Playwright.
+Depends on: A-003
+Notes: src/index.ts and src/types.ts in place. CheckerModule / CheckerFn / CheckerContext types defined, mirror schema.md §3. Registry stub exported. Checker files planned in index.ts comment.
 
 ---
 
-### [A-007] Proof-of-concept: axe-core running inside Playwright page
-Status: todo
+### [A-007] Scaffold packages/checkers/cybersecurity/
+Status: done
 Date: 2026-08-21
-Depends on: A-006
-Notes: Phase 1 exit criterion for A. Target: one CheckerResult[] returned from a real .gov.in page. Doesn't need to be production-ready — just proves the pipeline works.
+Depends on: A-003
+Notes: Same structure as accessibility. Passive-only warning banner in index.ts. Checker files planned. Renamed from original A-008 ordering — see note below.
 
 ---
 
-### [A-008] Scaffold packages/checkers/cybersecurity/
+### [A-008] Proof-of-concept: axe-core running inside Playwright on a real .gov.in page
 Status: todo
 Date: 2026-08-21
-Depends on: A-007
-Notes: Do NOT start until A-007 is done — per implementationPlan.md Phase 1 guidance. Passive inspection only (requirements.md §7).
+Depends on: A-006, @gigw/db types resolvable (need db package to export CheckerResult)
+Notes: Phase 1 exit criterion for A. Goal: one real CheckerResult[] returned from a live .gov.in page. Must confirm axe-core + Playwright wiring works end-to-end before building out all checkers.
 
 ---
 
-### [A-009] Build Section 5.2 accessibility checkers — automatable clauses
+### [A-009] Build Section 5.2 accessibility checkers — automatable clauses (axe-core)
 Status: todo
 Date: 2026-08-21
-Depends on: A-007, schema.md v1.1
-Notes: Phase 2 work. Covers clauses automatable via axe-core: 5.2.7, 5.2.11, 5.2.13, 5.2.14, 5.2.17, 5.2.18, 5.2.27, 5.2.28, 5.2.31, 5.2.33, 5.2.36, 5.2.38, 5.2.45, 5.2.48, 5.2.49.
+Depends on: A-008
+Notes: Phase 2. Implement axe-core.ts covering: 5.2.7, 5.2.11, 5.2.13, 5.2.14, 5.2.17, 5.2.18, 5.2.27, 5.2.28, 5.2.31, 5.2.33, 5.2.36, 5.2.38, 5.2.45, 5.2.48, 5.2.49.
 
 ---
 
 ### [A-010] Build Section 5.2 accessibility checkers — semi-automatable clauses
 Status: todo
 Date: 2026-08-21
-Depends on: A-009
-Notes: Phase 2 work. Covers: 5.2.1, 5.2.3, 5.2.8, 5.2.10, 5.2.12, 5.2.15, 5.2.16, 5.2.19, 5.2.21, 5.2.22, 5.2.25, 5.2.26, 5.2.29, 5.2.30, 5.2.32, 5.2.39, 5.2.42, 5.2.43, 5.2.44, 5.2.50.
+Depends on: A-008
+Notes: Phase 2. Implement: text-alternatives.ts, captions.ts, keyboard.ts, colour.ts, reflow.ts, images-of-text.ts, text-spacing.ts, motion.ts, flashing.ts, focus-order.ts, link-purpose.ts, headings.ts, language-parts.ts, navigation.ts, error-id.ts, status-messages.ts. (see index.ts for clause mapping)
 
 ---
 
-### [A-011] Build accessibility dashboard view (apps/dashboard/accessibility/)
+### [A-011] Build accessibility dashboard view
 Status: todo
 Date: 2026-08-21
 Depends on: A-009, A-010
-Notes: Phase 2 work. Build after checkers are solid, not before.
+Notes: Phase 2. Populate apps/dashboard/src/accessibility/ with results display after checkers are solid.
 
 ---
 
@@ -96,7 +97,7 @@ Notes: Phase 2 work. Build after checkers are solid, not before.
 Status: todo
 Date: 2026-08-21
 Depends on: A-008
-Notes: Phase 2 work. Covers: 5.3.1-code-headers, 5.3.1-code-cookies, 5.3.2-tls, 5.3.2-https, 5.3.2-ciphers. Passive only — requirements.md §7 is the hard boundary.
+Notes: Phase 2. Implement: headers.ts (5.3.1-code-headers), cookies.ts (5.3.1-code-cookies), tls.ts (5.3.2-tls, 5.3.2-https, 5.3.2-ciphers). Passive only — requirements.md §7 is the hard boundary.
 
 ---
 
@@ -104,22 +105,22 @@ Notes: Phase 2 work. Covers: 5.3.1-code-headers, 5.3.1-code-cookies, 5.3.2-tls, 
 Status: todo
 Date: 2026-08-21
 Depends on: A-012
-Notes: Phase 2 work. Covers: 5.3.1-code-errors (natural 404 only), 5.3.1-code-tls-comms, 5.3.2-waf, 5.3.3.
+Notes: Phase 2. Implement: error-page.ts (natural 404 only), tls-comms.ts, waf.ts, policies.ts. Passive only.
 
 ---
 
-### [A-014] Build cybersecurity dashboard view (apps/dashboard/cybersecurity/)
+### [A-014] Build cybersecurity dashboard view
 Status: todo
 Date: 2026-08-21
 Depends on: A-012, A-013
-Notes: Phase 2 work. Build after checkers are solid.
+Notes: Phase 2. Populate apps/dashboard/src/cybersecurity/.
 
 ---
 
-### [A-015] Integration testing — A's checkers end-to-end against a real .gov.in site
+### [A-015] Integration testing — A's checkers end-to-end against real .gov.in sites
 Status: todo
 Date: 2026-08-21
-Depends on: A-010, A-013, Phase 3 infra ready (B's aggregation service wired)
-Notes: Phase 3 work. Log false positives/negatives in brain/member-a.md.
+Depends on: A-010, A-013, B-aggregation-service wired (check brain/member-b.md for status)
+Notes: Phase 3. Run full pipeline: crawl → check → aggregate → dashboard. Log false positives/negatives in brain/member-a.md.
 
 ---

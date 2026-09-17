@@ -6,19 +6,25 @@
 import type { Severity } from "@gigw/db";
 
 /** Default severity weights per schema.md §6. Tunable after Phase 3. */
-export const SEVERITY_WEIGHTS: Record<Severity, number> = {
+export const severityWeights: Record<Severity, number> = {
   high: 3,
   medium: 2,
   low: 1,
 };
 
+// Keep UPPER_CASE alias for readability at call sites
+export const SEVERITY_WEIGHTS = severityWeights;
+
 export interface ScoringConfig {
   weights: Record<Severity, number>;
 }
 
-export const DEFAULT_SCORING_CONFIG: ScoringConfig = {
-  weights: SEVERITY_WEIGHTS,
+export const defaultScoringConfig: ScoringConfig = {
+  weights: severityWeights,
 };
+
+// Alias for readability
+export const DEFAULT_SCORING_CONFIG = defaultScoringConfig;
 
 /**
  * Compute a 0-100 page score from a flat list of severity values and their
@@ -29,8 +35,11 @@ export const DEFAULT_SCORING_CONFIG: ScoringConfig = {
  * numerator and denominator (they don't affect the automated score).
  */
 export function computePageScore(
-  results: Array<{ status: "pass" | "fail" | "needs_review" | "not_applicable"; severity: Severity }>,
-  config: ScoringConfig = DEFAULT_SCORING_CONFIG,
+  results: Array<{
+    status: "pass" | "fail" | "needs_review" | "not_applicable";
+    severity: Severity;
+  }>,
+  config: ScoringConfig = defaultScoringConfig,
 ): number {
   let passed = 0;
   let total = 0;
