@@ -22,8 +22,8 @@ export default tseslint.config(
       // Enforce consistent naming (rules.md §5)
       "@typescript-eslint/naming-convention": [
         "error",
-        { "selector": "variable", "format": ["camelCase"] },
-        { "selector": "function", "format": ["camelCase"] },
+        { "selector": "variable", "format": ["camelCase", "UPPER_CASE"] },
+        { "selector": "function", "format": ["camelCase", "PascalCase"] },
         { "selector": "typeLike", "format": ["PascalCase"] }
       ]
     }

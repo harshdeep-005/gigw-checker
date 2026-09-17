@@ -35,7 +35,7 @@ describe("computePageScore", () => {
 
   it("excludes needs_review and not_applicable from scoring", () => {
     const results = [
-      { status: "pass" as const, severity: "high" as const },   // weight 3, counts
+      { status: "pass" as const, severity: "high" as const }, // weight 3, counts
       { status: "needs_review" as const, severity: "high" as const }, // excluded
       { status: "not_applicable" as const, severity: "medium" as const }, // excluded
     ];

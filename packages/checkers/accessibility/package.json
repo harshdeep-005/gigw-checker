@@ -13,11 +13,12 @@
   "dependencies": {
     "@axe-core/playwright": "4.9.1",
     "axe-core": "4.9.1",
-    "playwright": "1.46.1",
+    "playwright": "1.55.1",
     "@gigw/db": "*"
   },
   "devDependencies": {
     "typescript": "*",
-    "vitest": "*"
+    "vitest": "*",
+    "@types/node": "20.16.1"
   }
 }
