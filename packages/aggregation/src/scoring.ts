@@ -48,7 +48,9 @@ export function computePageScore(
     if (result.status === "needs_review" || result.status === "not_applicable") {
       continue;
     }
-    const weight = config.weights[result.severity];
+    // Record<Severity, number> guarantees this key exists; the cast satisfies
+    // noUncheckedIndexedAccess without introducing a runtime branch.
+    const weight = (config.weights as Record<string, number>)[result.severity] ?? 1;
     total += weight;
     if (result.status === "pass") {
       passed += weight;
