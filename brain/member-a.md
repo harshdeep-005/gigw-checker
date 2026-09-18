@@ -44,3 +44,15 @@ Append-only. Never edit past entries. See rules.md for format.
 - Task 7 (prisma migrate + seed): Docker not installed on this machine. All artifacts ready (schema.prisma, seed.ts, tsx runner). Run `docker compose up -d` then `npm run db:migrate && npm run db:seed` from packages/db when Docker is available.
 - Phase 1 statically-verifiable exit criteria: all pass. DB-dependent criteria deferred.
 - Affects shared files: package.json (type:module, typescript-eslint dep), eslint.config.js (naming rule).
+
+---
+
+## 2026-08-21 (CI hardening + lint clean) — Member A
+- Root cause of 24 lint errors identified: two issues, not 24 bugs.
+  1. Prisma client not generated → prisma.* types were `any` → downstream unsafe-any errors in api, crawler, db. Fixed by adding `postinstall: npm run db:generate` to root package.json so `npm ci` always generates the client.
+  2. `noUncheckedIndexedAccess: true` + `Record<Severity, number>` indexed lookup → weight typed as `number | undefined`. Fixed with `(config.weights as Record<string, number>)[result.severity] ?? 1`.
+  3. axe-core.ts: `AXE_RULE_MAP[id]` lookups and `Object.entries(AXE_RULE_MAP)` destructured value needed explicit type annotations to satisfy no-unsafe-assignment under strictTypeChecked.
+- Fixed CI order: `npm ci` → `prisma generate` (via postinstall) → `build` → `format:check` → `lint` → `typecheck` → `test`. Previously lint ran before build, meaning @gigw/db dist types were absent.
+- Added root `db:generate` convenience script: `npm run db:generate --workspace=@gigw/db`.
+- Final state: typecheck 0 errors, lint 0 errors, format clean, 21/21 tests pass.
+- Affects shared files: package.json (postinstall + db:generate scripts), .github/workflows/ci.yml (step order + build step added).

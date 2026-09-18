@@ -9,6 +9,8 @@
     "apps/*"
   ],
   "scripts": {
+    "postinstall": "npm run db:generate",
+    "db:generate": "npm run db:generate --workspace=@gigw/db",
     "build": "tsc --build",
     "lint": "eslint \"packages/*/src/**/*.ts\" \"packages/checkers/*/src/**/*.ts\" \"apps/*/src/**/*.{ts,tsx}\"",
     "format": "prettier --write \"packages/*/src/**/*.ts\" \"packages/checkers/*/src/**/*.ts\" \"apps/*/src/**/*.{ts,tsx}\"",

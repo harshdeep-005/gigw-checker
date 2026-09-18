@@ -174,7 +174,8 @@ export const axeCoreChecker: CheckerModule = {
 
     // Process violations
     for (const violation of axeResults.violations) {
-      const mapping = AXE_RULE_MAP[violation.id];
+      const mapping: { clauseIds: string[]; severity: Severity } | undefined =
+        AXE_RULE_MAP[violation.id];
       if (!mapping) continue;
 
       for (const clauseId of mapping.clauseIds) {
@@ -197,7 +198,8 @@ export const axeCoreChecker: CheckerModule = {
 
     // Process incomplete (needs_review) — only if not already failed
     for (const item of axeResults.incomplete) {
-      const mapping = AXE_RULE_MAP[item.id];
+      const mapping: { clauseIds: string[]; severity: Severity } | undefined =
+        AXE_RULE_MAP[item.id];
       if (!mapping) continue;
 
       for (const clauseId of mapping.clauseIds) {
@@ -230,7 +232,11 @@ export const axeCoreChecker: CheckerModule = {
         );
       } else {
         // Clause had no violations and no incomplete — determine pass vs not_applicable
-        const rulesForClause = Object.entries(AXE_RULE_MAP)
+        const rulesForClause = (
+          Object.entries(AXE_RULE_MAP) as Array<
+            [string, { clauseIds: string[]; severity: Severity }]
+          >
+        )
           .filter(([, m]) => m.clauseIds.includes(clauseId))
           .map(([ruleId]) => ruleId);
 
