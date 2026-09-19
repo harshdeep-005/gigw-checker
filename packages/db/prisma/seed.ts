@@ -1,21 +1,20 @@
 /**
- * Seed ClauseDefinition rows for all 88 GIGW 3.0 clauses.
+ * Seed ClauseDefinition rows for all GIGW 3.0 clauses.
  *
  * Source: requirements.md §4 (5.1), §5 (5.2), §6 (5.3), §8 (5.4)
- * Run:    npm run db:seed  (from packages/db, after migration)
+ * Run:    npm run db:seed  (from workspace root, after migration)
  *
- * Automation values match requirements.md §0 terminology note:
+ * NOTE: severity lives on CheckerResult (schema.md §2), not on
+ * ClauseDefinition (schema.md §1). It is not seeded here.
+ *
+ * Automation values per requirements.md §0:
  *   "automatable"  → ClauseAutomation.automatable
  *   "semi"         → ClauseAutomation.semi_automatable
  *   "manual-only"  → ClauseAutomation.manual_only
  */
 
 import { PrismaClient } from "@prisma/client";
-import type {
-  ClauseCategory,
-  ClauseAutomation,
-  Severity,
-} from "@prisma/client";
+import type { ClauseCategory, ClauseAutomation } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -25,7 +24,6 @@ interface ClauseSeed {
   title: string;
   description: string;
   automation: ClauseAutomation;
-  severity: Severity;
   ownerMember: string;
   checkerId: string | null;
 }
@@ -38,7 +36,6 @@ const clauses: ClauseSeed[] = [
     title: "State Emblem/logo on homepage",
     description: "State Emblem/logo present on homepage with proper ratio/colour and alt text",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-logo",
   },
@@ -48,7 +45,6 @@ const clauses: ClauseSeed[] = [
     title: "Ownership info on homepage and entry pages",
     description: "Ownership information present on homepage and all entry pages",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-ownership",
   },
@@ -58,7 +54,6 @@ const clauses: ClauseSeed[] = [
     title: "Source cited for reproduced documents",
     description: "Source is cited for all reproduced documents",
     automation: "manual_only",
-    severity: "low",
     ownerMember: "B",
     checkerId: null,
   },
@@ -68,7 +63,6 @@ const clauses: ClauseSeed[] = [
     title: "Due permission for copyrighted content",
     description: "Due permission has been obtained for all copyrighted content",
     automation: "manual_only",
-    severity: "high",
     ownerMember: "B",
     checkerId: null,
   },
@@ -78,7 +72,6 @@ const clauses: ClauseSeed[] = [
     title: "Last updated/reviewed date shown",
     description: "Last updated or reviewed date is shown on pages",
     automation: "automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "quality-last-updated",
   },
@@ -88,7 +81,6 @@ const clauses: ClauseSeed[] = [
     title: "Downloadable material metadata",
     description: "Downloadable material shows title, size, format, and instructions",
     automation: "semi_automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "quality-download-meta",
   },
@@ -98,7 +90,6 @@ const clauses: ClauseSeed[] = [
     title: "Circulars/notifications/forms/schemes metadata",
     description: "Circulars, notifications, forms and schemes list title, language, purpose and validity",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-circular-meta",
   },
@@ -108,7 +99,6 @@ const clauses: ClauseSeed[] = [
     title: "Outdated content removed or archived",
     description: "Outdated content is removed from live site or archived",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-stale-content",
   },
@@ -118,7 +108,6 @@ const clauses: ClauseSeed[] = [
     title: "About Us section present and current",
     description: "An About Us section is present and kept up to date",
     automation: "semi_automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "quality-about-us",
   },
@@ -128,7 +117,6 @@ const clauses: ClauseSeed[] = [
     title: "Contact Us page with complete details",
     description: "Contact Us page with complete details is linked from the homepage",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-contact-us",
   },
@@ -138,7 +126,6 @@ const clauses: ClauseSeed[] = [
     title: "Feedback via online forms",
     description: "Feedback is collected via online forms with a timely response process",
     automation: "semi_automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "quality-feedback-form",
   },
@@ -148,7 +135,6 @@ const clauses: ClauseSeed[] = [
     title: "Link to National Portal (india.gov.in)",
     description: "Prominent link to india.gov.in present, opens in new window",
     automation: "automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "quality-national-portal-link",
   },
@@ -158,7 +144,6 @@ const clauses: ClauseSeed[] = [
     title: "Multi-browser tested; Hindi/regional fonts render correctly",
     description: "Site tested across browsers; Hindi/regional fonts render without layout loss",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "B",
     checkerId: null,
   },
@@ -168,7 +153,6 @@ const clauses: ClauseSeed[] = [
     title: "Help section linked from all pages",
     description: "Help section is linked from all pages in a consistent location",
     automation: "semi_automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "quality-help-link",
   },
@@ -178,7 +162,6 @@ const clauses: ClauseSeed[] = [
     title: "CSS-based layout and responsive design",
     description: "Site uses CSS-based layout with responsive design",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-responsive",
   },
@@ -188,7 +171,6 @@ const clauses: ClauseSeed[] = [
     title: "Content readable with style sheets off",
     description: "Content remains readable when style sheets are disabled",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-no-css",
   },
@@ -198,7 +180,6 @@ const clauses: ClauseSeed[] = [
     title: "Page title, lang attribute, metadata",
     description: "Each page has a descriptive title, correct lang attribute, and keywords/description metadata",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-page-metadata",
   },
@@ -208,7 +189,6 @@ const clauses: ClauseSeed[] = [
     title: "Minimum prescribed content on pages",
     description: "Homepage and subsequent pages contain all minimum GIGW-prescribed content elements",
     automation: "automatable",
-    severity: "high",
     ownerMember: "B",
     checkerId: "quality-min-content",
   },
@@ -218,7 +198,6 @@ const clauses: ClauseSeed[] = [
     title: "Data table markup",
     description: "Data tables use proper row/column headers, associated cells, and captions",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-table-markup",
   },
@@ -228,7 +207,6 @@ const clauses: ClauseSeed[] = [
     title: "Content prints correctly on A4",
     description: "Content prints correctly on A4 paper",
     automation: "semi_automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "quality-print",
   },
@@ -238,7 +216,6 @@ const clauses: ClauseSeed[] = [
     title: "Official domain (.gov.in/.nic.in)",
     description: "Site uses an official .gov.in or .nic.in domain (or eligible .edu.in/.res.in/.ac.in)",
     automation: "automatable",
-    severity: "high",
     ownerMember: "B",
     checkerId: "quality-domain",
   },
@@ -248,7 +225,6 @@ const clauses: ClauseSeed[] = [
     title: "API integration with India Portal ecosystem",
     description: "Site integrates with India Portal, DigiLocker, Aadhaar, SSO, MyGov, MyScheme, and/or Data Platform",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "quality-india-portal-integration",
   },
@@ -258,7 +234,6 @@ const clauses: ClauseSeed[] = [
     title: "Consistent UX/visual identity across organisation",
     description: "Consistent UX and visual identity maintained across the organisation's websites and apps",
     automation: "manual_only",
-    severity: "low",
     ownerMember: "B",
     checkerId: null,
   },
@@ -268,7 +243,6 @@ const clauses: ClauseSeed[] = [
     title: "Two-way social media integration",
     description: "Two-way social media integration is present",
     automation: "automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "quality-social-media",
   },
@@ -278,7 +252,6 @@ const clauses: ClauseSeed[] = [
     title: "Content free from spelling/grammatical errors",
     description: "Content is free from spelling and grammatical errors",
     automation: "semi_automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "quality-spelling",
   },
@@ -290,7 +263,6 @@ const clauses: ClauseSeed[] = [
     title: "Text alternatives for non-text content",
     description: "All non-text content has a text alternative (WCAG 1.1.1)",
     automation: "semi_automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-text-alternatives",
   },
@@ -300,7 +272,6 @@ const clauses: ClauseSeed[] = [
     title: "Alternative for prerecorded audio/video-only",
     description: "Prerecorded audio-only and video-only content has an alternative (WCAG 1.2.1)",
     automation: "manual_only",
-    severity: "high",
     ownerMember: "A",
     checkerId: null,
   },
@@ -310,7 +281,6 @@ const clauses: ClauseSeed[] = [
     title: "Captions for prerecorded audio in sync media",
     description: "Prerecorded audio in synchronised media has captions (WCAG 1.2.2)",
     automation: "semi_automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-captions",
   },
@@ -320,7 +290,6 @@ const clauses: ClauseSeed[] = [
     title: "Audio description or text alternative for video",
     description: "Prerecorded video in synchronised media has an audio description or text alternative (WCAG 1.2.3)",
     automation: "manual_only",
-    severity: "high",
     ownerMember: "A",
     checkerId: null,
   },
@@ -330,7 +299,6 @@ const clauses: ClauseSeed[] = [
     title: "Captions for live audio",
     description: "Live audio in synchronised media has captions (WCAG 1.2.4)",
     automation: "manual_only",
-    severity: "high",
     ownerMember: "A",
     checkerId: null,
   },
@@ -340,7 +308,6 @@ const clauses: ClauseSeed[] = [
     title: "Audio description for prerecorded video",
     description: "Prerecorded video has an audio description (WCAG 1.2.5)",
     automation: "manual_only",
-    severity: "high",
     ownerMember: "A",
     checkerId: null,
   },
@@ -350,7 +317,6 @@ const clauses: ClauseSeed[] = [
     title: "Info and relationships programmatically determinable",
     description: "Information, structure, and relationships are programmatically determinable (WCAG 1.3.1)",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -360,7 +326,6 @@ const clauses: ClauseSeed[] = [
     title: "Meaningful sequence",
     description: "Reading and navigation sequence is meaningful (WCAG 1.3.2)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-keyboard",
   },
@@ -370,7 +335,6 @@ const clauses: ClauseSeed[] = [
     title: "Sensory characteristics not sole instruction method",
     description: "Instructions do not rely solely on sensory characteristics (WCAG 1.3.3)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -380,7 +344,6 @@ const clauses: ClauseSeed[] = [
     title: "Orientation not restricted",
     description: "Content is not restricted to a single display orientation (WCAG 1.3.4)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-reflow",
   },
@@ -390,7 +353,6 @@ const clauses: ClauseSeed[] = [
     title: "Identify input purpose (autofill)",
     description: "The purpose of input fields can be programmatically determined (WCAG 1.3.5)",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -400,7 +362,6 @@ const clauses: ClauseSeed[] = [
     title: "Use of colour not sole indicator",
     description: "Colour is not the only visual means of conveying information (WCAG 1.4.1)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-colour",
   },
@@ -410,7 +371,6 @@ const clauses: ClauseSeed[] = [
     title: "Audio control (autoplay > 3s)",
     description: "Audio that plays automatically for more than 3 seconds can be paused or stopped (WCAG 1.4.2)",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -420,7 +380,6 @@ const clauses: ClauseSeed[] = [
     title: "Contrast minimum 4.5:1",
     description: "Text has a contrast ratio of at least 4.5:1 against its background (WCAG 1.4.3)",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -430,7 +389,6 @@ const clauses: ClauseSeed[] = [
     title: "Resize text to 200%",
     description: "Text can be resized up to 200% without loss of content or functionality (WCAG 1.4.4)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-reflow",
   },
@@ -440,7 +398,6 @@ const clauses: ClauseSeed[] = [
     title: "Images of text avoided",
     description: "Images of text are not used except where essential (WCAG 1.4.5)",
     automation: "semi_automatable",
-    severity: "low",
     ownerMember: "A",
     checkerId: "a11y-images-of-text",
   },
@@ -450,7 +407,6 @@ const clauses: ClauseSeed[] = [
     title: "Reflow at 320px/256px",
     description: "Content reflows at a width of 320 CSS pixels without horizontal scrolling (WCAG 1.4.10)",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-reflow",
   },
@@ -460,7 +416,6 @@ const clauses: ClauseSeed[] = [
     title: "Non-text contrast 3:1",
     description: "UI components and graphical objects have a contrast ratio of at least 3:1 (WCAG 1.4.11)",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -470,7 +425,6 @@ const clauses: ClauseSeed[] = [
     title: "Text spacing overrides don't break content",
     description: "No loss of content when text spacing is overridden (WCAG 1.4.12)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-text-spacing",
   },
@@ -480,7 +434,6 @@ const clauses: ClauseSeed[] = [
     title: "Content on hover/focus dismissible, hoverable, persistent",
     description: "Additional content triggered by hover or focus is dismissible, hoverable, and persistent (WCAG 1.4.13)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -490,7 +443,6 @@ const clauses: ClauseSeed[] = [
     title: "Keyboard operable",
     description: "All functionality is operable through a keyboard interface (WCAG 2.1.1)",
     automation: "semi_automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-keyboard",
   },
@@ -500,7 +452,6 @@ const clauses: ClauseSeed[] = [
     title: "No keyboard trap",
     description: "Keyboard focus is not trapped in any component (WCAG 2.1.2)",
     automation: "semi_automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-keyboard",
   },
@@ -510,7 +461,6 @@ const clauses: ClauseSeed[] = [
     title: "Character key shortcuts remappable or off",
     description: "Single-character key shortcuts can be turned off or remapped (WCAG 2.1.4)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -520,7 +470,6 @@ const clauses: ClauseSeed[] = [
     title: "Timing adjustable",
     description: "Time limits are adjustable or can be turned off (WCAG 2.2.1)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -530,7 +479,6 @@ const clauses: ClauseSeed[] = [
     title: "Pause/stop/hide moving content",
     description: "Moving, blinking, or auto-updating content can be paused, stopped, or hidden (WCAG 2.2.2)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-motion",
   },
@@ -540,7 +488,6 @@ const clauses: ClauseSeed[] = [
     title: "No content flashes more than 3 times per second",
     description: "No content flashes more than three times per second (WCAG 2.3.1)",
     automation: "semi_automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-flashing",
   },
@@ -550,7 +497,6 @@ const clauses: ClauseSeed[] = [
     title: "Bypass blocks (skip links)",
     description: "A mechanism to bypass repeated blocks of content is available (WCAG 2.4.1)",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -560,7 +506,6 @@ const clauses: ClauseSeed[] = [
     title: "Page titled",
     description: "Web pages have titles that describe their topic or purpose (WCAG 2.4.2)",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -570,7 +515,6 @@ const clauses: ClauseSeed[] = [
     title: "Focus order preserves meaning",
     description: "Components receive focus in an order that preserves meaning (WCAG 2.4.3)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-focus-order",
   },
@@ -580,7 +524,6 @@ const clauses: ClauseSeed[] = [
     title: "Link purpose from text or context",
     description: "The purpose of each link can be determined from the link text or context (WCAG 2.4.4)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-link-purpose",
   },
@@ -590,7 +533,6 @@ const clauses: ClauseSeed[] = [
     title: "Multiple ways to locate a page",
     description: "More than one way is available to locate a page (WCAG 2.4.5)",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -600,7 +542,6 @@ const clauses: ClauseSeed[] = [
     title: "Headings and labels describe topic",
     description: "Headings and labels describe topic or purpose (WCAG 2.4.6)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-headings",
   },
@@ -610,7 +551,6 @@ const clauses: ClauseSeed[] = [
     title: "Focus visible",
     description: "Any keyboard operable UI component has a visible focus indicator (WCAG 2.4.7)",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -620,7 +560,6 @@ const clauses: ClauseSeed[] = [
     title: "Pointer gestures have single-pointer alternative",
     description: "Multi-point or path-based gestures have a single-pointer alternative (WCAG 2.5.1)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -630,7 +569,6 @@ const clauses: ClauseSeed[] = [
     title: "Pointer cancellation",
     description: "Single-pointer actions can be cancelled (WCAG 2.5.2)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -640,7 +578,6 @@ const clauses: ClauseSeed[] = [
     title: "Label in name matches visible text",
     description: "Accessible name includes the visible label text (WCAG 2.5.3)",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -650,7 +587,6 @@ const clauses: ClauseSeed[] = [
     title: "Motion actuation has UI alternative",
     description: "Functionality triggered by device motion has a UI alternative (WCAG 2.5.4)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -660,7 +596,6 @@ const clauses: ClauseSeed[] = [
     title: "Page language set",
     description: "The default human language of each page is programmatically determinable (WCAG 3.1.1)",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -670,7 +605,6 @@ const clauses: ClauseSeed[] = [
     title: "Language of parts marked",
     description: "The language of passages in a different language is programmatically determinable (WCAG 3.1.2)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-language-parts",
   },
@@ -680,7 +614,6 @@ const clauses: ClauseSeed[] = [
     title: "No context change on focus",
     description: "Components do not initiate a change of context on focus (WCAG 3.2.1)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -690,7 +623,6 @@ const clauses: ClauseSeed[] = [
     title: "No unexpected context change on input",
     description: "Changing the setting of a UI component does not automatically cause a context change (WCAG 3.2.2)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -700,7 +632,6 @@ const clauses: ClauseSeed[] = [
     title: "Consistent navigation order",
     description: "Navigation mechanisms are presented in the same relative order across pages (WCAG 3.2.3)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-navigation",
   },
@@ -710,7 +641,6 @@ const clauses: ClauseSeed[] = [
     title: "Consistent identification of components",
     description: "Components with the same function are identified consistently (WCAG 3.2.4)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-navigation",
   },
@@ -720,7 +650,6 @@ const clauses: ClauseSeed[] = [
     title: "Input errors identified in text",
     description: "Input errors are identified and described in text (WCAG 3.3.1)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-error-id",
   },
@@ -730,7 +659,6 @@ const clauses: ClauseSeed[] = [
     title: "Labels or instructions for user input",
     description: "Labels or instructions are provided when content requires user input (WCAG 3.3.2)",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -740,7 +668,6 @@ const clauses: ClauseSeed[] = [
     title: "Error correction suggestions",
     description: "Error correction suggestions are provided if an input error is detected (WCAG 3.3.3)",
     automation: "manual_only",
-    severity: "medium",
     ownerMember: "A",
     checkerId: null,
   },
@@ -750,7 +677,6 @@ const clauses: ClauseSeed[] = [
     title: "Error prevention for legal/financial/data actions",
     description: "Submissions are reversible, checked, or confirmed for legal, financial, or data-modifying actions (WCAG 3.3.4)",
     automation: "manual_only",
-    severity: "high",
     ownerMember: "A",
     checkerId: null,
   },
@@ -760,7 +686,6 @@ const clauses: ClauseSeed[] = [
     title: "Valid markup",
     description: "No duplicate IDs, proper element nesting, complete start/end tags (WCAG 4.1.1)",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -770,7 +695,6 @@ const clauses: ClauseSeed[] = [
     title: "Name, role, value programmatically determinable",
     description: "Name, role, and value of UI components are programmatically determinable (WCAG 4.1.2)",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "a11y-axe-core",
   },
@@ -780,20 +704,17 @@ const clauses: ClauseSeed[] = [
     title: "Status messages without focus",
     description: "Status messages can be programmatically determined without receiving focus (WCAG 4.1.3)",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "a11y-status-messages",
   },
 
-  // ── §5.3 Cybersecurity (automatable + semi only) — Owner: A ─────────────
-  // manual-only clauses are included for the manual-review checklist
+  // ── §5.3 Cybersecurity — Owner: A ────────────────────────────────────────
   {
     clauseId: "5.3.1",
     section: "cybersecurity",
     title: "Security Audit Clearance certificate",
     description: "Security Audit Clearance certificate from NIC/STQC/CERT-In empanelled auditor obtained",
     automation: "manual_only",
-    severity: "high",
     ownerMember: "A",
     checkerId: null,
   },
@@ -803,7 +724,6 @@ const clauses: ClauseSeed[] = [
     title: "HTTP response headers obscured",
     description: "HTTP response headers do not disclose server type, version, or technology stack",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "sec-headers",
   },
@@ -813,7 +733,6 @@ const clauses: ClauseSeed[] = [
     title: "Cookies are Secure and HttpOnly",
     description: "All cookies have the Secure and HttpOnly flags set",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "sec-cookies",
   },
@@ -823,7 +742,6 @@ const clauses: ClauseSeed[] = [
     title: "Custom error pages (no stack trace exposure)",
     description: "Custom error pages are shown without exposing stack traces or server paths",
     automation: "semi_automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "sec-error-page",
   },
@@ -833,7 +751,6 @@ const clauses: ClauseSeed[] = [
     title: "3rd-party/API comms encrypted",
     description: "All third-party and API communications visible in page network traffic are encrypted",
     automation: "semi_automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "sec-tls-comms",
   },
@@ -843,7 +760,6 @@ const clauses: ClauseSeed[] = [
     title: "MFA / password policy on login",
     description: "MFA and password policy enforced on login — manual verification required",
     automation: "manual_only",
-    severity: "high",
     ownerMember: "A",
     checkerId: null,
   },
@@ -851,9 +767,8 @@ const clauses: ClauseSeed[] = [
     clauseId: "5.3.2",
     section: "cybersecurity",
     title: "Hosting environment secured",
-    description: "Hosting environment meets CIA (Confidentiality, Integrity, Availability) requirements — manual verification required",
+    description: "Hosting environment meets CIA requirements — manual verification required",
     automation: "manual_only",
-    severity: "high",
     ownerMember: "A",
     checkerId: null,
   },
@@ -863,7 +778,6 @@ const clauses: ClauseSeed[] = [
     title: "Valid SSL/TLS certificate (≥2048-bit SHA-256)",
     description: "Site has a valid SSL/TLS certificate with at least 2048-bit key and SHA-256 or stronger",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "sec-tls",
   },
@@ -873,7 +787,6 @@ const clauses: ClauseSeed[] = [
     title: "HTTPS enforced, HTTP disabled, HSTS present",
     description: "HTTPS is enforced, HTTP redirects to HTTPS, and HSTS header is present",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "sec-tls",
   },
@@ -883,7 +796,6 @@ const clauses: ClauseSeed[] = [
     title: "Weak protocols/ciphers disabled",
     description: "SSLv2/v3, TLS 1.0/1.1, 3DES, RC4 and other weak ciphers are disabled",
     automation: "automatable",
-    severity: "high",
     ownerMember: "A",
     checkerId: "sec-tls",
   },
@@ -893,7 +805,6 @@ const clauses: ClauseSeed[] = [
     title: "Web Application Firewall present",
     description: "A Web Application Firewall is present and active",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "sec-waf",
   },
@@ -903,7 +814,6 @@ const clauses: ClauseSeed[] = [
     title: "Security Policy, Privacy Policy, Contingency Plan published",
     description: "Security Policy, Privacy Policy, and Contingency Plan are defined and published on the site",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "A",
     checkerId: "sec-policies",
   },
@@ -915,7 +825,6 @@ const clauses: ClauseSeed[] = [
     title: "Web Information Manager (WIM) nominated",
     description: "A Web Information Manager is nominated and their contact details are displayed on the site",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "lifecycle-wim",
   },
@@ -925,7 +834,6 @@ const clauses: ClauseSeed[] = [
     title: "Website URL on organisational stationery",
     description: "Website URL appears on all organisational stationery and publicity material",
     automation: "manual_only",
-    severity: "low",
     ownerMember: "B",
     checkerId: null,
   },
@@ -935,7 +843,6 @@ const clauses: ClauseSeed[] = [
     title: "Copyright and policy documents defined",
     description: "Copyright, CMAP, CAP, CRP, Hyperlinking, T&C, and Monitoring Plan policies are defined and accessible",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "lifecycle-policies",
   },
@@ -945,7 +852,6 @@ const clauses: ClauseSeed[] = [
     title: "Hyperlink accuracy and external link indicators",
     description: "Hyperlink accuracy is maintained and external links are clearly indicated",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "lifecycle-hyperlinks",
   },
@@ -955,7 +861,6 @@ const clauses: ClauseSeed[] = [
     title: "Content free of offensive/discriminatory language",
     description: "Content is free of offensive or discriminatory language",
     automation: "semi_automatable",
-    severity: "high",
     ownerMember: "B",
     checkerId: "lifecycle-content-moderation",
   },
@@ -965,7 +870,6 @@ const clauses: ClauseSeed[] = [
     title: "Multi-language versions updated simultaneously",
     description: "All language versions of the site are updated simultaneously",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "lifecycle-multilang-sync",
   },
@@ -975,7 +879,6 @@ const clauses: ClauseSeed[] = [
     title: "No broken links",
     description: "No broken internal or external links on the site",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "lifecycle-broken-links",
   },
@@ -985,7 +888,6 @@ const clauses: ClauseSeed[] = [
     title: "No under construction pages",
     description: "No pages are in an under construction state",
     automation: "automatable",
-    severity: "low",
     ownerMember: "B",
     checkerId: "lifecycle-under-construction",
   },
@@ -995,7 +897,6 @@ const clauses: ClauseSeed[] = [
     title: "Documents in HTML or accessible formats",
     description: "Documents are provided in HTML or other accessible formats, not scanned-image-only PDFs",
     automation: "semi_automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "lifecycle-accessible-docs",
   },
@@ -1005,65 +906,51 @@ const clauses: ClauseSeed[] = [
     title: "Bilingual with prominent language selector",
     description: "Site is bilingual with a prominent language selector and uses Unicode characters",
     automation: "automatable",
-    severity: "medium",
     ownerMember: "B",
     checkerId: "lifecycle-bilingual",
   },
 ];
 
 async function main(): Promise<void> {
-  console.log(`Seeding ${clauses.length} ClauseDefinition rows...`);
-
-  let created = 0;
-  let skipped = 0;
+  console.log(`Seeding ${String(clauses.length)} ClauseDefinition rows...`);
 
   for (const clause of clauses) {
     await prisma.clauseDefinition.upsert({
       where: { clauseId: clause.clauseId },
       update: {
-        // Update metadata on re-seed (title, description, severity may be tuned)
         title: clause.title,
         description: clause.description,
         automation: clause.automation,
-        severity: clause.severity,
         checkerId: clause.checkerId,
       },
       create: clause,
     });
-
-    if (await wasCreated(clause.clauseId)) {
-      created++;
-    } else {
-      skipped++;
-    }
   }
 
-  console.log(`Done. ${clauses.length} rows upserted (${created} new, ${skipped} updated).`);
-
-  // Sanity checks
+  // ── Verification queries ──────────────────────────────────────────────────
   const total = await prisma.clauseDefinition.count();
   const byA = await prisma.clauseDefinition.count({ where: { ownerMember: "A" } });
   const byB = await prisma.clauseDefinition.count({ where: { ownerMember: "B" } });
+  const bySection = await prisma.clauseDefinition.groupBy({
+    by: ["section"],
+    _count: { clauseId: true },
+  });
 
   console.log(`\nVerification:`);
-  console.log(`  Total clauses in DB : ${total}`);
-  console.log(`  Owner A             : ${byA}`);
-  console.log(`  Owner B             : ${byB}`);
+  console.log(`  Total clauses : ${String(total)} (expected ${String(clauses.length)})`);
+  console.log(`  Owner A       : ${String(byA)}`);
+  console.log(`  Owner B       : ${String(byB)}`);
+  for (const row of bySection) {
+    console.log(`  ${row.section.padEnd(14)}: ${String(row._count.clauseId)}`);
+  }
 
   if (total !== clauses.length) {
     throw new Error(
-      `Expected ${clauses.length} clauses but found ${total} in DB. Check for duplicate or missing clauseIds.`,
+      `Row count mismatch: expected ${String(clauses.length)}, got ${String(total)}`,
     );
   }
-}
 
-// Track creation vs update
-async function wasCreated(clauseId: string): Promise<boolean> {
-  const row = await prisma.clauseDefinition.findUnique({
-    where: { clauseId },
-    select: { clauseId: true },
-  });
-  return row !== null;
+  console.log(`\nSeed complete.`);
 }
 
 main()

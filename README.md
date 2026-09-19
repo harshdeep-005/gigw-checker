@@ -23,5 +23,37 @@ Before touching any code, read (in this order):
 
 ## Status
 
-Phase 0 — planning docs complete, tasks and brain logs initialised (2026-08-21).
-Next: monorepo scaffold (A-003 / shared) — waiting on both members to confirm readiness.
+Phase 1 complete (2026-08-21). Phase 2 (checker development) in progress.
+See tasks/member-a.md and tasks/member-b.md for current task state.
+
+## Getting started
+
+**Prerequisites:** Node.js 20+, Docker Desktop
+
+```bash
+# 1. Clone and install
+git clone <repo-url>
+cd gigw-checker
+npm ci                        # also runs prisma generate via postinstall
+
+# 2. Start postgres + redis
+docker compose up -d postgres redis
+
+# 3. Run DB migration and seed
+cd packages/db
+DATABASE_URL=postgres://gigw:gigw@localhost:5432/gigw_checker npm run db:migrate
+DATABASE_URL=postgres://gigw:gigw@localhost:5432/gigw_checker npm run db:seed
+cd ../..
+
+# 4. Verify everything works
+npm run typecheck             # 0 errors
+npm test                      # all pass
+npm run lint                  # 0 errors
+```
+
+**Member A** owns `packages/checkers/accessibility/` and `packages/checkers/cybersecurity/`.
+**Member B** owns `packages/checkers/quality-lifecycle/` and `packages/aggregation/`.
+Shared packages: `packages/crawler/`, `packages/queue/`, `packages/api/`, `packages/db/`, `apps/dashboard/`.
+
+Before writing any code, read: `rules.md` → `schema.md` → `design.md` → `requirements.md`.
+

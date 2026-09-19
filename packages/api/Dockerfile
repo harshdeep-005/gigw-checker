@@ -9,6 +9,10 @@ COPY packages/queue/package.json ./packages/queue/
 COPY packages/crawler/package.json ./packages/crawler/
 RUN npm install --workspace=@gigw/api
 
+# Generate Prisma client (required before build)
+COPY packages/db/prisma ./packages/db/prisma
+RUN npx prisma generate --schema=packages/db/prisma/schema.prisma
+
 # Build
 COPY tsconfig.base.json ./
 COPY packages/api ./packages/api
