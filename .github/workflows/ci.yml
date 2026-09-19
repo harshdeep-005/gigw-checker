@@ -23,12 +23,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        # postinstall automatically runs `npm run db:generate` (Prisma client)
+        # postinstall automatically runs npm run db:generate
 
       - name: Build
         run: npm run build
-        # Compiles all packages via tsc --build (project references).
-        # Must happen before lint and typecheck so @gigw/db dist types are available.
 
       - name: Format check
         run: npm run format:check
