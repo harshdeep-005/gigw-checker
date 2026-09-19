@@ -9,7 +9,7 @@
  * DB shapes:   schema.md §4
  */
 
-import { chromium, type Browser, type Page } from "playwright";
+import { chromium, type Browser, type BrowserContext, type Page } from "playwright";
 import { prisma } from "@gigw/db";
 import type { RouteStatus } from "@gigw/db";
 import { normaliseUrl, isSameDomain, resolveHref, extractOrigin } from "./url-utils.js";
@@ -59,14 +59,15 @@ export async function crawl(jobId: string, options: CrawlOptions): Promise<Crawl
   let routesFailed = 0;
 
   const browser: Browser = await chromium.launch({ headless: true });
+  // newContext() is required — axe-core/playwright fails on pages not created from a context
+  const context: BrowserContext = await browser.newContext();
 
   try {
     while (queue.length > 0 && routesDiscovered < pageCap) {
       const entry = queue.shift();
-      if (!entry) break; // type-safe guard (while condition already ensures this)
+      if (!entry) break;
       const { url, depth, discoveredFrom } = entry;
 
-      // Check robots.txt
       let pathname: string;
       try {
         pathname = new URL(url).pathname;
@@ -88,7 +89,7 @@ export async function crawl(jobId: string, options: CrawlOptions): Promise<Crawl
       routesDiscovered++;
 
       const { httpStatus, links, status } = await visitPageWithRetry(
-        browser,
+        context,
         url,
         timeoutMs,
         retries,
@@ -96,15 +97,8 @@ export async function crawl(jobId: string, options: CrawlOptions): Promise<Crawl
 
       if (status === "error") routesFailed++;
 
-      await upsertRoute(jobId, {
-        url,
-        depth,
-        discoveredFrom,
-        status,
-        httpStatus,
-      });
+      await upsertRoute(jobId, { url, depth, discoveredFrom, status, httpStatus });
 
-      // Enqueue discovered links if depth allows and page cap not reached
       if (status !== "error" && depth < depthCap) {
         for (const href of links) {
           const resolved = resolveHref(href, url);
@@ -122,6 +116,7 @@ export async function crawl(jobId: string, options: CrawlOptions): Promise<Crawl
       }
     }
   } finally {
+    await context.close();
     await browser.close();
   }
 
@@ -137,7 +132,7 @@ interface VisitResult {
 }
 
 async function visitPageWithRetry(
-  browser: Browser,
+  context: BrowserContext,
   url: string,
   timeoutMs: number,
   retries: number,
@@ -145,16 +140,15 @@ async function visitPageWithRetry(
   let lastError: unknown;
 
   for (let attempt = 0; attempt <= retries; attempt++) {
-    const page: Page = await browser.newPage();
+    const page: Page = await context.newPage();
     try {
       const response = await page.goto(url, {
-        waitUntil: "networkidle",
+        waitUntil: "domcontentloaded",
         timeout: timeoutMs,
       });
 
       const httpStatus = response?.status() ?? null;
       const links = await extractLinks(page);
-
       return { httpStatus, links, status: "crawled" };
     } catch (err) {
       lastError = err;
@@ -163,15 +157,10 @@ async function visitPageWithRetry(
     }
   }
 
-  // All attempts exhausted
   console.error(`[crawler] Failed after ${String(retries + 1)} attempts: ${url}`, lastError);
   return { httpStatus: null, links: [], status: "error" };
 }
 
-/**
- * Extract all href attribute values from <a> tags on the page.
- * Returns raw href strings — normalisation happens in the caller.
- */
 async function extractLinks(page: Page): Promise<string[]> {
   try {
     return await page.$$eval("a[href]", (anchors) =>

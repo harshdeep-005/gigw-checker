@@ -56,3 +56,17 @@ Append-only. Never edit past entries. See rules.md for format.
 - Added root `db:generate` convenience script: `npm run db:generate --workspace=@gigw/db`.
 - Final state: typecheck 0 errors, lint 0 errors, format clean, 21/21 tests pass.
 - Affects shared files: package.json (postinstall + db:generate scripts), .github/workflows/ci.yml (step order + build step added).
+
+---
+
+## 2026-08-21 (Phase 1 exit) — Member A
+- Docker Desktop installed. Brought up postgres:16 + redis:7 containers.
+- Ran `prisma migrate dev --name init` — migration applied, all tables created.
+- Fixed seed.ts: removed `severity` field (belongs on CheckerResult, not ClauseDefinition). Re-ran seed — 97 rows inserted across quality(25), accessibility(50), cybersecurity(12), lifecycle(10). Counts verified via DB queries.
+- Fixed two bugs discovered during PoC run: (1) crawler and axe-core checker were using `browser.newPage()` directly — axe-core/playwright requires pages created from a `browser.newContext()`. Fixed in crawler.ts. (2) `india.gov.in` and `www.india.gov.in` block headless Chromium (WAF/bot protection). Selected `uidai.gov.in` as the PoC target instead.
+- A-008 COMPLETE: axe-core checker ran against `uidai.gov.in` and returned 15 real CheckerResult objects (11 pass, 1 fail, 2 needs_review, 1 not_applicable). Real failure: clause 5.2.49 — button without accessible text (`.mui-1ig7sdw`). All shapes valid. No exceptions.
+- Updated docker-compose.yml: removed obsolete `version: "3.9"` attribute.
+- Phase 1 exit criteria — all statically-verifiable pass: typecheck 0 errors, lint 0 errors, format clean, 21/21 tests. DB-dependent criteria all complete.
+- Phase 1 COMPLETE. Ready to start Phase 2.
+- Next: A-009/A-010 — build all §5.2 semi-automatable checkers (16 checker files).
+- Note for crawler: many .gov.in sites have bot protection. The crawler should use a realistic user-agent string (set in BrowserContext options) and `domcontentloaded` instead of `networkidle` for the wait condition.
