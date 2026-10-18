@@ -10,14 +10,24 @@
  *   severityWeight = { high: 3, medium: 2, low: 1 }
  *   pageScore = 100 * (sum of passed clause weights) / (sum of all applicable clause weights)
  *   overallScore = average of pageScore across all crawled pages
- *
- * TODO (Member B / Phase 2):
- *  - Implement computePageScore(results: CheckerResult[]): number
- *  - Implement buildPageReport(pageUrl, results): PageReport
- *  - Implement buildSiteReport(job, pageReports): SiteReport
- *  - Persist PageReport + SiteReport to DB via @gigw/db
- *  - Tune weights after Phase 3 real-world testing
  */
 
-export { SEVERITY_WEIGHTS } from "./scoring.js";
+// Scoring primitives
+export { SEVERITY_WEIGHTS, computePageScore } from "./scoring.js";
 export type { ScoringConfig } from "./scoring.js";
+
+// In-memory builders (pure, no DB — usable in tests)
+export {
+  buildPageReportData,
+  buildSiteReportData,
+  computeSectionScores,
+} from "./aggregation.js";
+export type {
+  ResultSlice,
+  SectionScores,
+  PageReportData,
+  SiteReportData,
+} from "./aggregation.js";
+
+// DB-persisting functions (require live Prisma client)
+export { persistSiteReport, aggregateJob } from "./aggregation.js";
