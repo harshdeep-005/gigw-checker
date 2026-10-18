@@ -1,6 +1,8 @@
+
 # Tasks — Member B
 
 See rules.md for the task entry format and ID convention.
+
 Task IDs are permanent — never reuse or renumber.
 
 ---
@@ -114,5 +116,3 @@ Status: todo
 Date: 2026-09-16
 Depends on: B-013
 Notes: Phase 4+5. Adjust severity weights if Phase 3 results look skewed. Wire manual-review items (needs_review results) into a separate checklist section in the dashboard (requirements.md §1.5).
-
----

@@ -1,3 +1,4 @@
+
 # Brain Log — Member B
 
 Append-only. Never edit past entries. See rules.md for format.
@@ -5,6 +6,7 @@ Append-only. Never edit past entries. See rules.md for format.
 ---
 
 ## 2026-09-16 — Member B
+
 - Read all planning docs and Member A's full brain log. Phase 1 is complete on A's side: crawler, BullMQ wiring, Fastify API, Prisma schema + migrations, DB seed (88 ClauseDefinition rows), and axe-core PoC all done. Docker is live.
 - Key infrastructure notes absorbed: pages must be created via `browser.newContext()` not `browser.newPage()`; many .gov.in sites block headless Chromium — use realistic user-agent + `domcontentloaded`; `@gigw/db` is the single import point for all Prisma types.
 - Populated tasks/member-b.md with B-001 through B-014 spanning Phase 1 (aggregation + PoC) through Phase 5 (tuning).
@@ -15,6 +17,7 @@ Append-only. Never edit past entries. See rules.md for format.
 ---
 
 ## 2026-09-16 (Phase 1 implementation) — Member B
+
 - Implemented aggregation service (B-003): `buildPageReportData`, `computeSectionScores`, `buildSiteReportData` (pure, no DB), `persistSiteReport` (Prisma transaction — creates SiteReport + PageReport rows, connects existing CheckerResult rows, sets CrawlJob status to done), `aggregateJob` (high-level entry point for the CHECK_QUEUE worker).
 - Key fix: `noUncheckedIndexedAccess` + `Record<ClauseCategory, ResultSlice[]>` indexed reads were `T | undefined`. Resolved by replacing the Record bucket pattern with four explicit typed arrays — no runtime change, satisfies the compiler cleanly.
 - Key fix: `prisma.$transaction` callback type extracted via `Parameters<Parameters<typeof prisma.$transaction>[0]>[0]` to type `tx` without importing the `Prisma` namespace (which isn't re-exported from `@gigw/db`).
@@ -28,6 +31,7 @@ Append-only. Never edit past entries. See rules.md for format.
 ---
 
 ## 2026-09-16 (Phase 1 exit) — Member B
+
 - Ran quality-lifecycle PoC (scripts/poc-quality-lifecycle.ts) against uidai.gov.in — same target used by Member A for axe-core PoC.
 - Site redirected https://uidai.gov.in/ → https://uidai.gov.in/en (551,714 bytes). Both checkers handled the redirect transparently (page.url() captures the final URL).
 - 4 real CheckerResult objects returned, all shapes valid:
@@ -44,6 +48,7 @@ Append-only. Never edit past entries. See rules.md for format.
 ---
 
 ## 2026-09-16 (testing pass) — Member B
+
 - Ran full test suite with --reporter=verbose. Initial run: 44/44 pass. After adding edge cases: 71/71 pass (+ 7 skipped DB integration tests).
 - Added 27 new edge case tests across 3 test files:
   - officialDomainChecker (+5): spoofed hostname (gov.in.malicious.com → fail), result count, CheckerResult shape, evidence content, deeply nested .nic.in subdomain.
@@ -55,3 +60,9 @@ Append-only. Never edit past entries. See rules.md for format.
 - Wrote aggregation.integration.test.ts (persistSiteReport + aggregateJob, 7 tests). Uses describe.skip guard when DATABASE_URL is not set — safe for CI. Tests cover: SiteReport field values, PageReport FK linkage, CheckerResult connection, CrawlJob status transition to done, aggregateJob end-to-end. Ready to run once `docker compose up -d` + `db:migrate` + `db:seed` are done.
 - Docker not installed on this machine — DB integration tests deferred, same as Member A's situation.
 - Affects shared files: none.
+
+---
+
+## Merge note
+
+- Ready to continue development.
