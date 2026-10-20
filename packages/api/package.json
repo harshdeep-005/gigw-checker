@@ -16,6 +16,10 @@
     "@fastify/cors": "10.0.2",
     "@gigw/db": "*",
     "@gigw/queue": "*",
+    "@gigw/checker-accessibility": "*",
+    "@gigw/checker-cybersecurity": "*",
+    "@gigw/checker-quality-lifecycle": "*",
+    "playwright": "1.55.1",
     "dotenv": "16.4.5"
   },
   "devDependencies": {

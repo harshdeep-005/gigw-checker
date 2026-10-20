@@ -78,42 +78,42 @@ Notes: Covered by axe-core.ts (A-008). All 15 automatable §5.2 clauses are mapp
 ---
 
 ### [A-010] Build Section 5.2 accessibility checkers — semi-automatable clauses
-Status: todo
+Status: done
 Date: 2026-08-21
 Depends on: A-008
-Notes: Phase 2. 16 checker files needed: text-alternatives.ts (5.2.1), captions.ts (5.2.3), keyboard.ts (5.2.21, 5.2.22), colour.ts (5.2.12), reflow.ts (5.2.15, 5.2.17), images-of-text.ts (5.2.16), text-spacing.ts (5.2.19), motion.ts (5.2.25), flashing.ts (5.2.26), focus-order.ts (5.2.29), link-purpose.ts (5.2.30), headings.ts (5.2.32), language-parts.ts (5.2.39), navigation.ts (5.2.42, 5.2.43), error-id.ts (5.2.44), status-messages.ts (5.2.50). Each must be registered in index.ts.
+Notes: All 16 checker files built, registered in index.ts, 47 unit tests pass. Files: text-alternatives.ts, captions.ts, keyboard.ts, reflow.ts, link-purpose.ts, headings.ts, colour.ts, images-of-text.ts, text-spacing.ts, motion.ts, flashing.ts, focus-order.ts, language-parts.ts, navigation.ts, error-id.ts, status-messages.ts. Bug sweep also completed: fixed clause IDs in quality-lifecycle checkers, introduced CheckerResultData type (removes id/pageReportId from checker output), crawler null-safe browser/context, robots allow logic, pageCap off-by-one, section scores return null for unevaluated, React.JSX.Element imports. Final: 118/118 tests pass, 0 typecheck errors, 0 lint errors.
 
 ---
 
 ### [A-011] Build accessibility dashboard view
-Status: todo
+Status: done
 Date: 2026-08-21
 Depends on: A-009, A-010
-Notes: Phase 2. Populate apps/dashboard/src/accessibility/ after checkers are complete.
+Notes: Built 3 components in apps/dashboard/src/accessibility/: AccessibilityScoreCard (score circle + counts), ClauseResultRow (expandable clause with status/severity/evidence), AccessibilityReport (filterable results list + manual-review checklist with 15 manual-only clauses). Wired into App.tsx routing at /accessibility with sample data preview. All checks pass.
 
 ---
 
 ### [A-012] Build Section 5.3 cybersecurity checkers — automatable clauses
-Status: todo
+Status: done
 Date: 2026-08-21
 Depends on: A-008
-Notes: Phase 2. headers.ts (5.3.1-code-headers), cookies.ts (5.3.1-code-cookies), tls.ts (5.3.2-tls, 5.3.2-https, 5.3.2-ciphers). Passive only — requirements.md §7 is the hard boundary.
+Notes: Built 3 files: headers.ts (5.3.1-code-headers — Server/X-Powered-By version disclosure), cookies.ts (5.3.1-code-cookies — Secure + HttpOnly flags), tls.ts (5.3.2-tls/https/ciphers — HTTPS enforcement, HSTS, mixed content). All passive only per requirements.md §7. Registered in cybersecurity index.ts. 118/118 tests, 0 errors.
 
 ---
 
 ### [A-013] Build Section 5.3 cybersecurity checkers — semi-automatable clauses
-Status: todo
+Status: done
 Date: 2026-08-21
 Depends on: A-012
-Notes: Phase 2. error-page.ts (natural 404 only), tls-comms.ts, waf.ts, policies.ts. Passive only.
+Notes: Built 4 files: error-page.ts (5.3.1-code-errors — natural 404, stack trace pattern detection), tls-comms.ts (5.3.1-code-tls-comms — 3rd-party HTTP requests via PerformanceObserver), waf.ts (5.3.2-waf — WAF header inference), policies.ts (5.3.3 — privacy/security/contingency policy link detection). All passive only. Registered in cybersecurity index.ts. 118/118 tests, 0 errors.
 
 ---
 
 ### [A-014] Build cybersecurity dashboard view
-Status: todo
+Status: done
 Date: 2026-08-21
 Depends on: A-012, A-013
-Notes: Phase 2. Populate apps/dashboard/src/cybersecurity/.
+Notes: Built CybersecurityScoreCard (score circle + counts + passive-only disclaimer) and CybersecurityReport (filterable results + manual-audit checklist with 6 manual-only clause groups). Wired into App.tsx routing at /cybersecurity with sample data preview. All checks pass.
 
 ---
 

@@ -15,10 +15,11 @@ import Fastify, { type FastifyRequest, type FastifyReply } from "fastify";
 import cors from "@fastify/cors";
 import { prisma } from "@gigw/db";
 import { addCrawlJob } from "@gigw/queue";
+import { registerCheckRoute } from "./check.js";
 
 // ── Domain validation ─────────────────────────────────────────────────────────
 
-const ALLOWED_DOMAIN_RE = /(\.|^)(gov\.in|nic\.in)(:\d+)?$/i;
+const ALLOWED_DOMAIN_RE = /(\.|^)(gov\.in|nic\.in|ac\.in|res\.in|edu\.in)(:\d+)?$/i;
 
 function isAllowedDomain(url: string): boolean {
   try {
@@ -34,6 +35,7 @@ function isAllowedDomain(url: string): boolean {
 const app = Fastify({ logger: true });
 
 await app.register(cors, { origin: "*" });
+registerCheckRoute(app);
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 
@@ -59,7 +61,9 @@ app.post("/jobs", async (request: FastifyRequest<{ Body: CreateJobBody }>, reply
 
   if (!isAllowedDomain(seedUrl)) {
     return reply.status(400).send({
-      error: "Only .gov.in and .nic.in domains are supported. " + `Received: ${seedUrl}`,
+      error:
+        "Only .gov.in, .nic.in, .ac.in, .res.in, and .edu.in domains are supported. " +
+        `Received: ${seedUrl}`,
     });
   }
 

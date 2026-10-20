@@ -21,8 +21,10 @@ const CHECKER_ID = "quality-domain";
 const CLAUSE_ID = "5.1.21";
 
 /** Accepted TLDs for Indian government websites per GIGW 3.0 §4 clause 5.1.21.
- *  Includes root domains (gov.in, nic.in) and subdomains (.gov.in, .nic.in). */
-const OFFICIAL_DOMAIN_SUFFIXES = [".gov.in", ".nic.in"];
+ *  Includes root domains and subdomains.
+ *  .gov.in / .nic.in — government
+ *  .ac.in / .res.in / .edu.in — eligible institutions (NITs, IITs, IIMs, research orgs) */
+const OFFICIAL_DOMAIN_SUFFIXES = [".gov.in", ".nic.in", ".ac.in", ".res.in", ".edu.in"];
 
 function isOfficialDomain(url: string): boolean {
   try {

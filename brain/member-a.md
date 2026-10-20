@@ -93,3 +93,41 @@ Append-only. Never edit past entries. See rules.md for format.
 - **Issue identified**: when a site returns a bot-block / "Access Denied" page, the checker audits it as if it were real content. Tool should detect this (title = "Access Denied", HTTP 403, body length < 1000 bytes) and mark the page as not_applicable with evidence "page blocked by WAF/bot protection". Adding to Phase 2 task list.
 
 - Affects shared files: scripts/integration-test.ts (new file, in scripts/ which is not linted).
+
+---
+
+## 2026-08-21 (A-010 complete + bug sweep) — Member A
+- A-010 COMPLETE: all 16 semi-automatable §5.2 checker files built and registered in index.ts. 47 unit tests pass (semi-auto.test.ts). Coverage: 33 of 50 §5.2 clauses now have working checkers (14 automatable via axe-core + 19 semi-automatable). Remaining 17 are manual-only by design.
+- Full bug sweep completed before A-010: 29 issues found and fixed across the codebase. Critical: clause IDs corrected in official-domain.ts (5.1.1→5.1.21) and metadata.ts (5.1.21→5.1.17) — both were pointing at the wrong GIGW clauses. CheckerResultData type introduced — omits id and pageReportId from checker output to prevent empty-string PK on DB insert. High: crawler browser/context null-safe in finally block, section scores return null for unevaluated sections (not misleading 100), robots allow logic fixed (>= not >), pageCap off-by-one fixed. Medium: React.JSX.Element fixed with explicit import in all 3 dashboard components, 5.2.17 removed from axe-core (owned by reflow.ts), AXE_CORE_CLAUSE_IDS now derived from AXE_RULE_MAP to prevent divergence.
+- Final state after bug sweep + A-010: typecheck 0 errors, lint 0 errors, format clean, 118/118 tests pass (7 skipped DB integration).
+- Starting A-011: accessibility dashboard view in apps/dashboard/src/accessibility/.
+- Affects shared files: tasks/member-a.md, brain/member-a.md.
+
+---
+
+## 2026-08-21 (A-011 complete) — Member A
+- A-011 COMPLETE: built accessibility dashboard view in apps/dashboard/src/accessibility/. Three components: AccessibilityScoreCard (score circle + pass/fail/needs_review/n_a counts), ClauseResultRow (expandable row with status icon, severity badge, evidence text, detail drill-down), AccessibilityReport (filterable results list with status filter buttons + manual-review checklist table with 15 manual-only §5.2 clauses). Wired into App.tsx routing at /accessibility with sample data preview. Components are accessible (aria-label, role=button, aria-expanded, aria-pressed on filter buttons). All checks pass: typecheck 0, lint 0, format clean, 118/118 tests.
+- Starting A-012: §5.3 cybersecurity automatable checkers (headers, cookies, tls). Re-reading requirements.md §7 before writing any code.
+- Affects shared files: tasks/member-a.md, brain/member-a.md, apps/dashboard/src/App.tsx (route + nav link added).
+
+---
+
+## 2026-08-21 (A-012 + A-013 complete) — Member A
+- A-012 COMPLETE: built 3 automatable cybersecurity checkers — headers.ts (Server/X-Powered-By version disclosure), cookies.ts (Secure + HttpOnly flags via Set-Cookie header inspection), tls.ts (HTTPS enforcement, HSTS, mixed-content detection across 3 clauses). All passive only per §7.
+- A-013 COMPLETE: built 4 semi-automatable cybersecurity checkers — error-page.ts (navigates to non-existent URL, checks for stack trace patterns and server file paths — stays within §7 boundary), tls-comms.ts (observes 3rd-party requests via PerformanceObserver, flags HTTP), waf.ts (infers WAF from response headers — Cloudflare, Sucuri, Akamai, etc.), policies.ts (searches for privacy/security/contingency policy links). All registered in cybersecurity index.ts.
+- §5.3 coverage: 11 of 11 automatable + semi-automatable clauses now have working checkers. Manual-only clauses (5.3.1, 5.3.1-code-mfa, 5.3.2, etc.) surfaced in manual-review checklist.
+- Final state: typecheck 0 errors, lint 0 errors, format clean, 118/118 tests pass.
+- Starting A-014: cybersecurity dashboard view.
+- Affects shared files: tasks/member-a.md, brain/member-a.md.
+
+---
+
+## 2026-08-21 (A-014 complete — Phase 2 Member A done) — Member A
+- A-014 COMPLETE: built cybersecurity dashboard view in apps/dashboard/src/cybersecurity/. CybersecurityScoreCard (score circle + counts + passive-only disclaimer), CybersecurityReport (filterable results + manual-audit checklist with 6 manual-only clause groups including 5.3.1 audit cert, MFA, hosting, DB security). Wired into App.tsx routing at /cybersecurity with sample data preview.
+- **Phase 2 Member A is now COMPLETE.** All tasks A-010 through A-014 done. Summary:
+  - §5.2 Accessibility: 33 of 50 clauses have working checkers (14 automatable + 19 semi-automatable). 17 manual-only by design.
+  - §5.3 Cybersecurity: 11 of 11 automatable + semi-automatable clauses have working checkers. All passive only per §7.
+  - Dashboard: both accessibility and cybersecurity views built with score cards, filterable results, and manual-review checklists.
+  - Final state: typecheck 0 errors, lint 0 errors, format clean, 118/118 tests pass.
+- Next: A-015 (Phase 3 integration testing) — depends on Member B's aggregation being wired. Check brain/member-b.md for status before starting.
+- Affects shared files: tasks/member-a.md, brain/member-a.md, apps/dashboard/src/App.tsx (route + nav link added).

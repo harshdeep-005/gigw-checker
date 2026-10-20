@@ -1,32 +1,47 @@
 /**
  * @gigw/checker-cybersecurity
  *
- * All Section 5.3 (Cybersecurity) checkers — PASSIVE ONLY.
- * Owner: Member A. See requirements.md §6 for clause table and
- * requirements.md §7 for the strict legal boundary on what may be tested.
+ * All Section 5.3 (Cybersecurity) checkers.
+ * Owner: Member A. See requirements.md §6 for clause table.
  *
- * ╔══════════════════════════════════════════════════════════════════╗
- * ║  READ BEFORE ADDING ANY CHECKER TO THIS PACKAGE:                ║
- * ║  Every checker here must be passive (no probing, no scanning).  ║
- * ║  See requirements.md §7 — this is a legal boundary, not style.  ║
- * ╚══════════════════════════════════════════════════════════════════╝
+ * ⚠️  PASSIVE ONLY — requirements.md §7 is the hard boundary.
+ *    No active scanning, probing, or exploit techniques of any kind.
+ *    This is a legal constraint (IT Act 2000 §43/66), not a style preference.
  *
- * Planned checker files (one-file-per-clause-group, rules.md §5):
- *
- *   headers.ts     — 5.3.1-code-headers (response header inspection, auto)
- *   cookies.ts     — 5.3.1-code-cookies (Set-Cookie flag inspection, auto)
- *   tls.ts         — 5.3.2-tls, 5.3.2-https, 5.3.2-ciphers (TLS handshake, auto)
- *   error-page.ts  — 5.3.1-code-errors (natural 404 — NOT probing, semi)
- *   tls-comms.ts   — 5.3.1-code-tls-comms (visible network traffic, semi)
- *   waf.ts         — 5.3.2-waf (header/behaviour inference, semi)
- *   policies.ts    — 5.3.3 (policy page presence, semi)
- *
- * TODO (A-012, A-013): implement each file above. Do NOT start until
- * A-007 (accessibility proof-of-concept) is done — see tasks/member-a.md.
+ * Coverage:
+ *  Automatable:
+ *    5.3.1-code-headers (HTTP header disclosure)
+ *    5.3.1-code-cookies (Secure + HttpOnly flags)
+ *    5.3.2-tls, 5.3.2-https, 5.3.2-ciphers (TLS/HTTPS/HSTS/mixed-content)
+ *  Semi-automatable:
+ *    5.3.1-code-errors (natural 404 page — A-013)
+ *    5.3.1-code-tls-comms (3rd-party API encryption — A-013)
+ *    5.3.2-waf (WAF presence inference — A-013)
+ *    5.3.3 (policy pages presence — A-013)
+ *  Manual-only (surfaced in manual-review checklist only):
+ *    5.3.1, 5.3.1-code-mfa, 5.3.2, all 5.3.1-code-* (internal),
+ *    all 5.3.1-db-*, all 5.3.2-* (hosting)
  */
 
-export type { CheckerModule, CheckerContext, CheckerFn } from "./types.js";
+import { headersChecker } from "./headers.js";
+import { cookiesChecker } from "./cookies.js";
+import { tlsChecker } from "./tls.js";
+import { errorPageChecker } from "./error-page.js";
+import { tlsCommsChecker } from "./tls-comms.js";
+import { wafChecker } from "./waf.js";
+import { policiesChecker } from "./policies.js";
 
-export const cybersecurityCheckers: import("./types.js").CheckerModule[] = [
-  // checkers will be imported and listed here as they are built (A-012, A-013)
+export type { CheckerModule, CheckerFn, CheckerContext, CheckerResultData } from "./types.js";
+
+/** All §5.3 cybersecurity checkers — passive only. */
+export const cybersecurityCheckers = [
+  // Automatable
+  headersChecker, // 5.3.1-code-headers
+  cookiesChecker, // 5.3.1-code-cookies
+  tlsChecker, // 5.3.2-tls, 5.3.2-https, 5.3.2-ciphers
+  // Semi-automatable
+  errorPageChecker, // 5.3.1-code-errors
+  tlsCommsChecker, // 5.3.1-code-tls-comms
+  wafChecker, // 5.3.2-waf
+  policiesChecker, // 5.3.3
 ];
