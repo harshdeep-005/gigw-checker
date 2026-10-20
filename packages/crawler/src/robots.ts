@@ -77,7 +77,7 @@ export function isAllowedByRobots(pathname: string, rules: RobotsRules): boolean
   }
 
   for (const pattern of rules.allow) {
-    if (pathname.startsWith(pattern) && pattern.length > bestMatch.length) {
+    if (pathname.startsWith(pattern) && pattern.length >= bestMatch.length) {
       bestMatch = { length: pattern.length, allowed: true };
     }
   }

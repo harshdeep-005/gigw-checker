@@ -1,20 +1,24 @@
 /**
- * Checker: metadata
- * Clause: 5.1.21 — Pages must have a meaningful <title>, <meta name="description">,
- *                  and <meta name="keywords">.
+ * Checker: quality-page-metadata
+ * Clause: 5.1.17 — Each page must have a meaningful <title>, a
+ *                  <meta name="description">, and <meta name="keywords">.
  * Automation: automatable
  * Severity: medium
  * Owner: Member B (B-004 / B-005)
  *
  * Strategy: parse the HTML string (no extra network request). Produces one
  * CheckerResult per sub-check so the dashboard can show granular evidence.
+ *
+ * Fix (bug #22): was wrongly set to clauseId "5.1.21" (Official domain) and
+ * checkerId "metadata". Corrected to clauseId "5.1.17" (page metadata) and
+ * checkerId "quality-page-metadata" to match the seed.
  */
 
-import type { CheckerModule, CheckerContext } from "./types.js";
-import type { CheckerResult } from "@gigw/db";
+import type { CheckerModule, CheckerContext, CheckerResultData } from "./types.js";
 
-const CHECKER_ID = "metadata";
-const CLAUSE_ID = "5.1.21";
+// Must match ClauseDefinition.checkerId in seed for clause 5.1.17
+const CHECKER_ID = "quality-page-metadata";
+const CLAUSE_ID = "5.1.17";
 
 interface MetaCheck {
   name: string;
@@ -61,15 +65,14 @@ export const metadataChecker: CheckerModule = {
   checkerId: CHECKER_ID,
   clauseIds: [CLAUSE_ID],
 
-  run(ctx: CheckerContext): Promise<CheckerResult[]> {
+  run(ctx: CheckerContext): Promise<CheckerResultData[]> {
     const now = new Date();
 
     const results = META_CHECKS.map((check) => {
       const value = check.extract(ctx.html);
       const present = value !== null && value.length > 0;
 
-      const result: CheckerResult = {
-        id: "",
+      const result: CheckerResultData = {
         clauseId: CLAUSE_ID,
         pageUrl: ctx.pageUrl,
         status: present ? "pass" : "fail",
@@ -77,7 +80,6 @@ export const metadataChecker: CheckerModule = {
         evidence: present ? check.presentEvidence(value) : check.emptyEvidence,
         detail: { subCheck: check.name, value: value ?? null },
         checkedAt: now,
-        pageReportId: null,
       };
 
       return result;

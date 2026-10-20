@@ -34,8 +34,8 @@ function getRedisConnection(): ConnectionOptions {
 // ── Queue names ───────────────────────────────────────────────────────────────
 
 export const QUEUE_NAMES = {
-  CRAWL: "gigw:crawl",
-  CHECK: "gigw:check",
+  CRAWL: "gigw-crawl",
+  CHECK: "gigw-check",
 } as const;
 
 // ── Retry / backoff config ────────────────────────────────────────────────────

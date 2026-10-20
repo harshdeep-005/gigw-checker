@@ -1,4 +1,6 @@
-export function NotFoundPage(): React.JSX.Element {
+import type { JSX } from "react";
+
+export function NotFoundPage(): JSX.Element {
   return (
     <div role="alert">
       <h1>404 — Page not found</h1>

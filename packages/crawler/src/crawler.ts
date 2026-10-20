@@ -58,11 +58,16 @@ export async function crawl(jobId: string, options: CrawlOptions): Promise<Crawl
   let routesDiscovered = 0;
   let routesFailed = 0;
 
-  const browser: Browser = await chromium.launch({ headless: true });
-  // newContext() is required — axe-core/playwright fails on pages not created from a context
-  const context: BrowserContext = await browser.newContext();
+  // Initialise to null so the finally block can safely guard on them
+  // if chromium.launch() or browser.newContext() itself throws.
+  let browser: Browser | null = null;
+  let context: BrowserContext | null = null;
 
   try {
+    browser = await chromium.launch({ headless: true });
+    // newContext() is required — axe-core/playwright fails on pages not created from a context
+    context = await browser.newContext();
+
     while (queue.length > 0 && routesDiscovered < pageCap) {
       const entry = queue.shift();
       if (!entry) break;
@@ -108,7 +113,7 @@ export async function crawl(jobId: string, options: CrawlOptions): Promise<Crawl
           const normalised = normaliseUrl(resolved);
           if (!normalised) continue;
           if (visited.has(normalised)) continue;
-          if (visited.size + queue.length >= pageCap) break;
+          if (routesDiscovered + queue.length >= pageCap) break;
 
           visited.add(normalised);
           queue.push({ url: normalised, depth: depth + 1, discoveredFrom: url });
@@ -116,8 +121,8 @@ export async function crawl(jobId: string, options: CrawlOptions): Promise<Crawl
       }
     }
   } finally {
-    await context.close();
-    await browser.close();
+    await context?.close();
+    await browser?.close();
   }
 
   return { jobId, routesDiscovered, routesFailed };

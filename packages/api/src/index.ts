@@ -10,6 +10,7 @@
  * Owned by: shared (both members). See design.md §2.
  */
 
+import "dotenv/config"; // load .env before any prisma/redis client initialises
 import Fastify, { type FastifyRequest, type FastifyReply } from "fastify";
 import cors from "@fastify/cors";
 import { prisma } from "@gigw/db";
@@ -17,7 +18,7 @@ import { addCrawlJob } from "@gigw/queue";
 
 // ── Domain validation ─────────────────────────────────────────────────────────
 
-const ALLOWED_DOMAIN_RE = /\.(gov\.in|nic\.in)(:\d+)?$/i;
+const ALLOWED_DOMAIN_RE = /(\.|^)(gov\.in|nic\.in)(:\d+)?$/i;
 
 function isAllowedDomain(url: string): boolean {
   try {
@@ -62,20 +63,24 @@ app.post("/jobs", async (request: FastifyRequest<{ Body: CreateJobBody }>, reply
     });
   }
 
-  // Create CrawlJob in DB
+  // Create CrawlJob in DB then enqueue — delete the DB row if enqueue fails
   const job = await prisma.crawlJob.create({
     data: { seedUrl, status: "queued" },
   });
 
-  // Enqueue in BullMQ
-  await addCrawlJob({
-    jobId: job.id,
-    options: {
-      seedUrl,
-      ...(depthCap !== undefined && { depthCap }),
-      ...(pageCap !== undefined && { pageCap }),
-    },
-  });
+  try {
+    await addCrawlJob({
+      jobId: job.id,
+      options: {
+        seedUrl,
+        ...(depthCap !== undefined && { depthCap }),
+        ...(pageCap !== undefined && { pageCap }),
+      },
+    });
+  } catch (err) {
+    await prisma.crawlJob.delete({ where: { id: job.id } });
+    throw err; // let Fastify return 500
+  }
 
   return reply.status(202).send({ jobId: job.id });
 });

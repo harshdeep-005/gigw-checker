@@ -26,8 +26,8 @@
 
 import AxeBuilder from "@axe-core/playwright";
 import type { Result, NodeResult } from "axe-core";
-import type { CheckerModule, CheckerContext } from "./types.js";
-import type { CheckerResult, Severity } from "@gigw/db";
+import type { CheckerModule, CheckerContext, CheckerResultData } from "./types.js";
+import type { Severity } from "@gigw/db";
 
 // ── axe rule → clause mapping ─────────────────────────────────────────────────
 //
@@ -59,8 +59,7 @@ const AXE_RULE_MAP: Record<string, { clauseIds: string[]; severity: Severity }> 
   // 5.2.14 — contrast minimum
   "color-contrast": { clauseIds: ["5.2.14"], severity: "high" },
 
-  // 5.2.17 — reflow (axe checks overflow)
-  "css-orientation-lock": { clauseIds: ["5.2.17"], severity: "medium" },
+  // 5.2.17 — reflow: owned by reflow.ts checker (css-orientation-lock removed from here)
 
   // 5.2.18 — non-text contrast
   "color-contrast-enhanced": { clauseIds: ["5.2.18"], severity: "medium" },
@@ -109,23 +108,9 @@ const AXE_RULE_MAP: Record<string, { clauseIds: string[]; severity: Severity }> 
   "aria-hidden-focus": { clauseIds: ["5.2.49"], severity: "high" },
 };
 
-// All clause IDs covered by this checker (for the index registry)
+// All clause IDs covered by this checker (derived from AXE_RULE_MAP to prevent divergence)
 export const AXE_CORE_CLAUSE_IDS = [
-  "5.2.7",
-  "5.2.11",
-  "5.2.13",
-  "5.2.14",
-  "5.2.17",
-  "5.2.18",
-  "5.2.27",
-  "5.2.28",
-  "5.2.31",
-  "5.2.33",
-  "5.2.36",
-  "5.2.38",
-  "5.2.45",
-  "5.2.48",
-  "5.2.49",
+  ...new Set(Object.values(AXE_RULE_MAP).flatMap((m) => m.clauseIds)),
 ];
 
 // ── Checker implementation ────────────────────────────────────────────────────
@@ -134,8 +119,8 @@ export const axeCoreChecker: CheckerModule = {
   checkerId: "a11y-axe-core",
   clauseIds: AXE_CORE_CLAUSE_IDS,
 
-  async run(ctx: CheckerContext): Promise<CheckerResult[]> {
-    const results: CheckerResult[] = [];
+  async run(ctx: CheckerContext): Promise<CheckerResultData[]> {
+    const results: CheckerResultData[] = [];
     const now = new Date();
 
     let axeResults;
@@ -277,10 +262,8 @@ function makeResult(
   severity: Severity,
   evidence: string,
   checkedAt: Date,
-): CheckerResult {
+): CheckerResultData {
   return {
-    // id will be assigned by DB on insert — use empty string as placeholder
-    id: "",
     clauseId,
     pageUrl,
     status,
@@ -288,6 +271,5 @@ function makeResult(
     evidence,
     detail: null,
     checkedAt,
-    pageReportId: null,
   };
 }

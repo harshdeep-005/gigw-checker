@@ -1,6 +1,7 @@
 /**
  * Shared types for cybersecurity checkers.
- * Mirrors schema.md §3 — keep in sync with the accessibility package's types.ts.
+ * Mirrors schema.md §3 — keep in sync with the accessibility and
+ * quality-lifecycle packages' types.ts.
  */
 
 import type { Page } from "playwright";
@@ -12,7 +13,13 @@ export interface CheckerContext {
   html: string;
 }
 
-export type CheckerFn = (ctx: CheckerContext) => Promise<CheckerResult[]>;
+/**
+ * The shape checkers produce. Omits `id` and `pageReportId` — see
+ * accessibility/src/types.ts for the full explanation.
+ */
+export type CheckerResultData = Omit<CheckerResult, "id" | "pageReportId">;
+
+export type CheckerFn = (ctx: CheckerContext) => Promise<CheckerResultData[]>;
 
 export interface CheckerModule {
   checkerId: string;

@@ -1,4 +1,3 @@
-
 /**
  * @gigw/checker-quality-lifecycle
  *
@@ -16,5 +15,5 @@ import { metadataChecker } from "./metadata.js";
 //          §5.4 automatable (B-007), semi-automatable (B-008)
 export const qualityLifecycleCheckers: import("./types.js").CheckerModule[] = [
   officialDomainChecker, // 5.1.1 — official .gov.in / .nic.in domain
-  metadataChecker,       // 5.1.21 — page title, meta description, meta keywords
+  metadataChecker, // 5.1.21 — page title, meta description, meta keywords
 ];

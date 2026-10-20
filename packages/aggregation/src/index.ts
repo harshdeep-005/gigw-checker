@@ -1,4 +1,3 @@
-
 /**
  * @gigw/aggregation
  *
@@ -18,17 +17,8 @@ export { SEVERITY_WEIGHTS, computePageScore } from "./scoring.js";
 export type { ScoringConfig } from "./scoring.js";
 
 // In-memory builders (pure, no DB — usable in tests)
-export {
-  buildPageReportData,
-  buildSiteReportData,
-  computeSectionScores,
-} from "./aggregation.js";
-export type {
-  ResultSlice,
-  SectionScores,
-  PageReportData,
-  SiteReportData,
-} from "./aggregation.js";
+export { buildPageReportData, buildSiteReportData, computeSectionScores } from "./aggregation.js";
+export type { ResultSlice, SectionScores, PageReportData, SiteReportData } from "./aggregation.js";
 
 // DB-persisting functions (require live Prisma client)
 export { persistSiteReport, aggregateJob } from "./aggregation.js";

@@ -19,13 +19,13 @@ function makeCtx(pageUrl: string, html: string): CheckerContext {
 
 // ── officialDomainChecker ────────────────────────────────────────────────────
 
-describe("officialDomainChecker — 5.1.1", () => {
+describe("officialDomainChecker — 5.1.21", () => {
   it("passes for .gov.in domain", async () => {
     const ctx = makeCtx("https://uidai.gov.in/", "");
     const results = await officialDomainChecker.run(ctx);
     expect(results).toHaveLength(1);
     expect(results[0]?.status).toBe("pass");
-    expect(results[0]?.clauseId).toBe("5.1.1");
+    expect(results[0]?.clauseId).toBe("5.1.21");
     expect(results[0]?.severity).toBe("high");
   });
 
@@ -115,7 +115,7 @@ const MISSING_META_HTML = `
 </html>
 `;
 
-describe("metadataChecker — 5.1.21", () => {
+describe("metadataChecker — 5.1.17", () => {
   it("returns 3 results (one per sub-check)", async () => {
     const ctx = makeCtx("https://mha.gov.in/", FULL_META_HTML);
     const results = await metadataChecker.run(ctx);
@@ -126,7 +126,7 @@ describe("metadataChecker — 5.1.21", () => {
     const ctx = makeCtx("https://mha.gov.in/", FULL_META_HTML);
     const results = await metadataChecker.run(ctx);
     expect(results.every((r) => r.status === "pass")).toBe(true);
-    expect(results.every((r) => r.clauseId === "5.1.21")).toBe(true);
+    expect(results.every((r) => r.clauseId === "5.1.17")).toBe(true);
     expect(results.every((r) => r.severity === "medium")).toBe(true);
   });
 
@@ -203,7 +203,7 @@ describe("metadataChecker — 5.1.21", () => {
     const ctx = makeCtx(url, FULL_META_HTML);
     const results = await metadataChecker.run(ctx);
     expect(results.every((r) => r.pageUrl === url)).toBe(true);
-    expect(results.every((r) => r.clauseId === "5.1.21")).toBe(true);
+    expect(results.every((r) => r.clauseId === "5.1.17")).toBe(true);
   });
 
   it("detail field contains subCheck name and extracted value on pass", async () => {

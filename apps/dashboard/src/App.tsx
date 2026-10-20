@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import { HomePage } from "./shell/HomePage.js";
 import { NotFoundPage } from "./shell/NotFoundPage.js";
@@ -7,7 +8,7 @@ import { NotFoundPage } from "./shell/NotFoundPage.js";
  * Domain-specific view components (accessibility/, cybersecurity/,
  * quality-lifecycle/) are lazy-loaded once built (Phase 2).
  */
-export function App(): React.JSX.Element {
+export function App(): JSX.Element {
   return (
     <BrowserRouter>
       <header role="banner" style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>

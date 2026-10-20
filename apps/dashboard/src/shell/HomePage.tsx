@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 /**
  * HomePage — entry point for submitting a site URL for compliance checking.
  *
@@ -7,7 +9,7 @@
  *  - Poll GET /api/jobs/:id for status
  *  - Redirect to /reports/:id when status === "done"
  */
-export function HomePage(): React.JSX.Element {
+export function HomePage(): JSX.Element {
   return (
     <div>
       <h1>GIGW 3.0 Compliance Checker</h1>

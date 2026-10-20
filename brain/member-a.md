@@ -70,3 +70,26 @@ Append-only. Never edit past entries. See rules.md for format.
 - Phase 1 COMPLETE. Ready to start Phase 2.
 - Next: A-009/A-010 — build all §5.2 semi-automatable checkers (16 checker files).
 - Note for crawler: many .gov.in sites have bot protection. The crawler should use a realistic user-agent string (set in BrowserContext options) and `domcontentloaded` instead of `networkidle` for the wait condition.
+
+---
+
+## 2026-08-21 (integration test run) — Member A
+
+- Ran combined integration test (scripts/integration-test.ts) against two sites.
+
+- **uidai.gov.in** — 19 total results across §5.1 + §5.2:
+  - §5.1: 4/4 pass (100%) — official domain, title, description, keywords all present
+  - §5.2: 11 pass, 1 fail, 1 needs_review, 2 n/a (≈85%)
+  - FAIL 5.2.49 (high): buttons without accessible text — `.mui-1ig7sdw` (Material UI icon buttons with no aria-label)
+  - NEEDS_REVIEW 5.2.14 (high): axe cannot fully resolve contrast on this page — needs manual check
+  - N/A 5.2.11, 5.2.13: no input fields or autoplay audio on homepage, correctly skipped
+
+- **india.gov.in** — blocked by WAF ("Access Denied"), tool audited the error page itself:
+  - §5.1: 2/4 pass (50%) — error page has no meta description or keywords
+  - §5.2: 9 pass, 3 fail, 0 needs_review, 3 n/a (≈75%)
+  - FAIL 5.2.38 (high): error page has no lang attribute on <html>
+  - FAIL 5.2.27, 5.2.31: error page has no landmark regions or <main> element
+
+- **Issue identified**: when a site returns a bot-block / "Access Denied" page, the checker audits it as if it were real content. Tool should detect this (title = "Access Denied", HTTP 403, body length < 1000 bytes) and mark the page as not_applicable with evidence "page blocked by WAF/bot protection". Adding to Phase 2 task list.
+
+- Affects shared files: scripts/integration-test.ts (new file, in scripts/ which is not linted).

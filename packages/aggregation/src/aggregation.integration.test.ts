@@ -47,10 +47,7 @@ async function createRoute(jobId: string, url: string): Promise<void> {
 }
 
 /** Create a CheckerResult row and return its id. */
-async function createCheckerResult(
-  clauseId: string,
-  pageUrl: string,
-): Promise<string> {
+async function createCheckerResult(clauseId: string, pageUrl: string): Promise<string> {
   const result = await prisma.checkerResult.create({
     data: {
       clauseId,
@@ -100,9 +97,7 @@ describeIfDb("persistSiteReport (DB)", () => {
       },
     ];
 
-    const clauseMap = new Map<string, ClauseCategory>([
-      ["5.1.1", ClauseCategory.quality],
-    ]);
+    const clauseMap = new Map<string, ClauseCategory>([["5.1.1", ClauseCategory.quality]]);
 
     const page = buildPageReportData(PAGE_URL, pageResults);
     const siteData = buildSiteReportData(

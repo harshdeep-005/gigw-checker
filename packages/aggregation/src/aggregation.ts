@@ -8,32 +8,38 @@
  */
 
 import { prisma, ClauseCategory, JobStatus } from "@gigw/db";
-import type { CheckerResult, CrawlJob, PageReport, SiteReport } from "@gigw/db";
+import type { CrawlJob, PageReport, SiteReport } from "@gigw/db";
 import { computePageScore } from "./scoring.js";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
 /**
- * The minimal shape we need from CheckerResult to build reports.
- * Matches the Prisma model but uses a subset so callers can pass plain objects
- * in tests without needing full Prisma instances.
+ * The minimal shape produced by checkers and stored in the DB.
+ * Uses Omit to keep it in sync with CheckerResultData from checker packages —
+ * id and pageReportId are excluded because:
+ *   - id: DB-assigned on insert (never set by checkers)
+ *   - pageReportId: set during aggregation
+ *
+ * When fetched from DB (in aggregateJob), real IDs are present.
+ * The `id` field is typed as string here because aggregateJob fetches from DB.
  */
 export interface ResultSlice {
-  id: string;
+  id: string; // real cuid when fetched from DB; never "" in this type
   clauseId: string;
   pageUrl: string;
-  status: CheckerResult["status"];
-  severity: CheckerResult["severity"];
+  status: "pass" | "fail" | "needs_review" | "not_applicable";
+  severity: "high" | "medium" | "low";
   evidence: string;
   checkedAt: Date;
 }
 
-/** Section score breakdown keyed by ClauseCategory. */
+/** Section score breakdown keyed by ClauseCategory.
+ *  null means no checkers ran for that section — not evaluated, not 100. */
 export interface SectionScores {
-  quality: number;
-  accessibility: number;
-  cybersecurity: number;
-  lifecycle: number;
+  quality: number | null;
+  accessibility: number | null;
+  cybersecurity: number | null;
+  lifecycle: number | null;
 }
 
 /** In-memory representation before DB persistence. */
@@ -64,10 +70,7 @@ export interface SiteReportData {
  * Build an in-memory PageReportData from a flat list of CheckerResults for
  * a single page. Does not touch the DB.
  */
-export function buildPageReportData(
-  pageUrl: string,
-  results: ResultSlice[],
-): PageReportData {
+export function buildPageReportData(pageUrl: string, results: ResultSlice[]): PageReportData {
   const pageResults = results.filter((r) => r.pageUrl === pageUrl);
 
   let passCount = 0;
@@ -111,10 +114,10 @@ export function computeSectionScores(
   }
 
   return {
-    quality: computePageScore(quality),
-    accessibility: computePageScore(accessibility),
-    cybersecurity: computePageScore(cybersecurity),
-    lifecycle: computePageScore(lifecycle),
+    quality: quality.length > 0 ? computePageScore(quality) : null,
+    accessibility: accessibility.length > 0 ? computePageScore(accessibility) : null,
+    cybersecurity: cybersecurity.length > 0 ? computePageScore(cybersecurity) : null,
+    lifecycle: lifecycle.length > 0 ? computePageScore(lifecycle) : null,
   };
 }
 
@@ -131,9 +134,7 @@ export function buildSiteReportData(
 ): SiteReportData {
   // Average page scores; treat an empty site as 100 (no violations found)
   const overallScore =
-    pages.length > 0
-      ? Math.round(pages.reduce((sum, p) => sum + p.score, 0) / pages.length)
-      : 100;
+    pages.length > 0 ? Math.round(pages.reduce((sum, p) => sum + p.score, 0) / pages.length) : 100;
 
   const sectionScores = computeSectionScores(allResults, clauseSectionMap);
 
@@ -179,7 +180,7 @@ export async function persistSiteReport(
         totalRoutesDiscovered: data.totalRoutesDiscovered,
         totalRoutesChecked: data.totalRoutesChecked,
         overallScore: data.overallScore,
-        scoreQuality: data.sectionScores.quality,
+        scoreQuality: data.sectionScores.quality, // null = not evaluated
         scoreAccessibility: data.sectionScores.accessibility,
         scoreCybersecurity: data.sectionScores.cybersecurity,
         scoreLifecycle: data.sectionScores.lifecycle,
@@ -190,7 +191,10 @@ export async function persistSiteReport(
     // 2. Create PageReport rows and connect existing CheckerResults to them
     const pageReports: PageReport[] = [];
     for (const page of data.pages) {
-      const resultIds = page.results.map((r) => ({ id: r.id }));
+      // Guard: only connect results that have a real DB-assigned id.
+      // An empty id means the result was never persisted — skip it to avoid
+      // a Prisma connect on id:"" which would fail or corrupt the table.
+      const resultIds = page.results.filter((r) => r.id.length > 0).map((r) => ({ id: r.id }));
       const pageReport = await tx.pageReport.create({
         data: {
           pageUrl: page.pageUrl,
@@ -234,6 +238,8 @@ export async function aggregateJob(
   const job = await prisma.crawlJob.findUniqueOrThrow({ where: { id: jobId } });
 
   // Load all CheckerResults written for this job's pages
+  // Use select to match exactly the ResultSlice shape — avoids unsafe cast
+  // and ensures URL matching uses the same normalised URLs stored in Route.url
   const routes = await prisma.route.findMany({
     where: { jobId },
     select: { url: true },
@@ -242,7 +248,16 @@ export async function aggregateJob(
 
   const rawResults = await prisma.checkerResult.findMany({
     where: { pageUrl: { in: routeUrls } },
-  }) as ResultSlice[];
+    select: {
+      id: true,
+      clauseId: true,
+      pageUrl: true,
+      status: true,
+      severity: true,
+      evidence: true,
+      checkedAt: true,
+    },
+  });
 
   // Load clause → section mapping from DB (populated by seed)
   const clauses = await prisma.clauseDefinition.findMany({
@@ -257,7 +272,13 @@ export async function aggregateJob(
   const pages = uniqueUrls.map((url) => buildPageReportData(url, rawResults));
 
   // Build site report data
-  const siteData = buildSiteReportData(job, pages, rawResults, clauseSectionMap, totalRoutesDiscovered);
+  const siteData = buildSiteReportData(
+    job,
+    pages,
+    rawResults,
+    clauseSectionMap,
+    totalRoutesDiscovered,
+  );
 
   // Persist and return
   return persistSiteReport(jobId, siteData);

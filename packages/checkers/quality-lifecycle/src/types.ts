@@ -1,6 +1,6 @@
 /**
  * Shared types for quality + lifecycle checkers.
- * Mirrors schema.md §3.
+ * Mirrors schema.md §3 and accessibility/src/types.ts exactly.
  */
 
 import type { Page } from "playwright";
@@ -12,7 +12,18 @@ export interface CheckerContext {
   html: string;
 }
 
-export type CheckerFn = (ctx: CheckerContext) => Promise<CheckerResult[]>;
+/**
+ * The shape checkers produce. Omits `id` and `pageReportId` because:
+ *  - `id` is assigned by the DB (cuid auto-generated). Checkers must NOT set it.
+ *  - `pageReportId` is set during aggregation.
+ *
+ * Worker strips both before inserting:
+ *   const { id: _id, pageReportId: _pr, ...data } = result;
+ *   await prisma.checkerResult.create({ data });
+ */
+export type CheckerResultData = Omit<CheckerResult, "id" | "pageReportId">;
+
+export type CheckerFn = (ctx: CheckerContext) => Promise<CheckerResultData[]>;
 
 export interface CheckerModule {
   checkerId: string;

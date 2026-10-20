@@ -14,7 +14,19 @@ export interface CheckerContext {
   html: string; // rendered HTML snapshot (page.content())
 }
 
-export type CheckerFn = (ctx: CheckerContext) => Promise<CheckerResult[]>;
+/**
+ * The shape checkers produce. Omits `id` and `pageReportId` because:
+ *  - `id` is assigned by the DB (cuid auto-generated). Checkers must NOT set it —
+ *    passing id:"" to prisma.checkerResult.create() would insert an empty-string PK.
+ *  - `pageReportId` is set during aggregation when the PageReport is created.
+ *
+ * The worker strips both fields before inserting:
+ *   const { id: _id, pageReportId: _pr, ...data } = result;
+ *   await prisma.checkerResult.create({ data });
+ */
+export type CheckerResultData = Omit<CheckerResult, "id" | "pageReportId">;
+
+export type CheckerFn = (ctx: CheckerContext) => Promise<CheckerResultData[]>;
 
 export interface CheckerModule {
   checkerId: string; // unique, e.g. "a11y-contrast" — matches ClauseDefinition.checkerId
