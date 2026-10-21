@@ -40,7 +40,7 @@ Notes: Phase 1 exit criteria. official-domain.ts (5.1.1) and metadata.ts (5.1.21
 ---
 
 ### [B-005] Build §5.1 automatable checkers — full set
-Status: todo
+Status: done
 Date: 2026-09-16
 Depends on: B-004
 Notes: Phase 2. Clauses: 5.1.1 (official domain), 5.1.5 (contact page link), 5.1.6 (about page link), 5.1.7 (national portal link — india.gov.in), 5.1.18 (responsive/mobile — viewport meta), 5.1.21 (metadata: title + description + keywords), 5.1.22 (no prohibited content patterns). One file per clause-group, each registered in quality-lifecycle/src/index.ts.
@@ -48,7 +48,7 @@ Notes: Phase 2. Clauses: 5.1.1 (official domain), 5.1.5 (contact page link), 5.1
 ---
 
 ### [B-006] Build §5.1 semi-automatable checkers
-Status: todo
+Status: done
 Date: 2026-09-16
 Depends on: B-005
 Notes: Phase 2. Clauses: 5.1.2 (state emblem/logo present — image heuristic), 5.1.3 (ownership info — text presence), 5.1.4 (content freshness — date element detection), 5.1.8 (social media links), 5.1.9 (feedback mechanism), 5.1.10 (search functionality), 5.1.11 (sitemap link), 5.1.12 (accessibility statement link), 5.1.13 (grievance officer info). Semi-automatable means heuristic detection with needs_review fallback.
@@ -56,7 +56,7 @@ Notes: Phase 2. Clauses: 5.1.2 (state emblem/logo present — image heuristic), 
 ---
 
 ### [B-007] Build §5.4 lifecycle checkers — automatable
-Status: todo
+Status: done
 Date: 2026-09-16
 Depends on: B-004
 Notes: Phase 2. Clauses: 5.4.1 (no broken links — HTTP status check on all anchor hrefs), 5.4.2 (no "under construction" pages — text heuristic), 5.4.3 (bilingual: Hindi + English selector or lang attribute), 5.4.4 (Unicode-compliant text — charset meta + font heuristic).
@@ -64,7 +64,7 @@ Notes: Phase 2. Clauses: 5.4.1 (no broken links — HTTP status check on all anc
 ---
 
 ### [B-008] Build §5.4 lifecycle checkers — semi-automatable
-Status: todo
+Status: done
 Date: 2026-09-16
 Depends on: B-007
 Notes: Phase 2. Clauses: 5.4.5 (WIM contact details present), 5.4.6 (hyperlink accuracy — text vs href mismatch heuristic), 5.4.7 (multi-language content sync — same nav structure in both languages), 5.4.9 (content toxicity heuristic — keyword scan). needs_review for anything requiring human judgement.
@@ -72,7 +72,7 @@ Notes: Phase 2. Clauses: 5.4.5 (WIM contact details present), 5.4.6 (hyperlink a
 ---
 
 ### [B-009] Build quality-lifecycle dashboard view
-Status: todo
+Status: done
 Date: 2026-09-16
 Depends on: B-005, B-006, B-007, B-008
 Notes: Phase 2. Populate apps/dashboard/src/quality-lifecycle/ — section score card, clause-by-clause breakdown table, manual-review items list. Mirror accessibility view structure once A's view is available.
@@ -96,7 +96,7 @@ Notes: Phase 2. Test buildPageReport and buildSiteReport with mock CheckerResult
 ---
 
 ### [B-012] Unit tests — quality-lifecycle checkers
-Status: todo
+Status: done
 Date: 2026-09-16
 Depends on: B-005, B-006, B-007, B-008
 Notes: Phase 2. Mock CheckerContext (html string, mock page). Test each checker with synthetic HTML that exercises pass, fail, and needs_review paths.

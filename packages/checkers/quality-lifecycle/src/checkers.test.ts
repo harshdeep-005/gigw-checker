@@ -35,6 +35,24 @@ describe("officialDomainChecker — 5.1.21", () => {
     expect(results[0]?.status).toBe("pass");
   });
 
+  it("passes for .edu.in domain", async () => {
+    const ctx = makeCtx("https://iitd.edu.in/", "");
+    const results = await officialDomainChecker.run(ctx);
+    expect(results[0]?.status).toBe("pass");
+  });
+
+  it("passes for .res.in domain", async () => {
+    const ctx = makeCtx("https://ncbs.res.in/", "");
+    const results = await officialDomainChecker.run(ctx);
+    expect(results[0]?.status).toBe("pass");
+  });
+
+  it("passes for .ac.in domain", async () => {
+    const ctx = makeCtx("https://www.nitj.ac.in/", "");
+    const results = await officialDomainChecker.run(ctx);
+    expect(results[0]?.status).toBe("pass");
+  });
+
   it("passes for subdomain of .gov.in", async () => {
     const ctx = makeCtx("https://services.india.gov.in/", "");
     const results = await officialDomainChecker.run(ctx);
@@ -46,6 +64,7 @@ describe("officialDomainChecker — 5.1.21", () => {
     const results = await officialDomainChecker.run(ctx);
     expect(results[0]?.status).toBe("fail");
     expect(results[0]?.evidence).toContain("example.com");
+    expect(results[0]?.evidence).toContain(".gov.in");
   });
 
   it("fails for domain that merely contains .gov.in in path", async () => {

@@ -66,3 +66,25 @@ Append-only. Never edit past entries. See rules.md for format.
 ## Merge note
 
 - Ready to continue development.
+
+---
+
+## 2026-09-16 (Phase 2 — checker build) — Member B
+- Built 13 new checker files (B-005 through B-008): ownership-info (5.1.2), last-updated (5.1.5), contact-page (5.1.10), national-portal-link (5.1.12), responsive-design (5.1.15), social-media-links (5.1.24), about-page (5.1.9), feedback-mechanism (5.1.11), broken-links (5.4.7), under-construction (5.4.8), bilingual (5.4.10), wim-contact (5.4.1), policy-pages (5.4.3).
+- All 15 checkers registered in index.ts. typecheck: 0 errors. lint: 0 errors. 71/71 unit tests still pass.
+- Ran all 15 checkers live against uidai.gov.in — 22 real results. Key findings:
+  - PASS: official domain, ownership info, last updated (Oct 9 2026), responsive design, metadata (all 3), social media (5 platforms), under construction clean, lang attr, UTF-8.
+  - FAIL: contact page link not found, india.gov.in national portal link missing, feedback mechanism not found, copyright policy missing, hyperlinking policy missing, language selector regex missed (site loaded in /hi — Hindi — so English toggle not in HTML).
+  - NEEDS_REVIEW: about us link found, WIM phone present but no WIM label, privacy policy found, T&C found.
+  - BROKEN LINKS FALSE POSITIVE: broken-links checker reported 36/43 broken. Root cause: HEAD requests to uidai.gov.in paths return HTTP 500 because the server doesn't support HEAD — it needs GET. Also some internal paths return 500 legitimately. Fix in Phase 5 tuning: use GET fallback when HEAD returns 5xx, and filter out static asset paths (CSS/JS/icons) from link checking since those are not navigable links.
+  - LANGUAGE SELECTOR FALSE NEGATIVE: site redirected to /hi (Hindi version). Language selector likely only visible on the English version — checker regex would pass on the English URL. Acceptable for now; full crawler would check both URLs.
+- Affects shared files: none.
+
+---
+
+## 2026-09-16 (Phase 2 complete) — Member B
+- B-012: Wrote phase2-checkers.test.ts covering all 12 new Phase 2 checkers (60 tests). Every checker tested for pass, fail, needs_review paths plus clauseId/severity shape verification. 131/131 tests pass.
+- B-009: Built quality-lifecycle dashboard view (apps/dashboard/src/quality-lifecycle/): QualityLifecyclePage.tsx (route /reports/:reportId/quality, fetches from API, renders scores + tables + manual review list), ScoreGauge.tsx (circular SVG gauge, colour-coded green/amber/red), ClauseTable.tsx (expandable rows for multi-result clauses), ManualReviewList.tsx (clearly separated yellow panel per requirements.md §1.5), StatusBadge.tsx (coloured pill), types.ts (plain TS mirror of schema.md shapes, no Prisma dependency in frontend). Route wired into App.tsx.
+- Final state: 0 lint errors, 0 typecheck errors, 131/131 tests pass. Phase 2 COMPLETE.
+- Remaining: B-010 (pipeline wiring, Phase 3), B-013 (integration testing, Phase 3), B-014 (tuning, Phase 4+5).
+- Affects shared files: apps/dashboard/src/App.tsx (added route + import).

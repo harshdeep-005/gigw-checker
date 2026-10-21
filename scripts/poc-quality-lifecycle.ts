@@ -10,7 +10,7 @@
 import { chromium } from "playwright";
 import { qualityLifecycleCheckers } from "../packages/checkers/quality-lifecycle/src/index.js";
 
-const TARGET_URL = "https://uidai.gov.in/";
+const TARGET_URL = "https://www.nitj.ac.in/";
 
 async function main(): Promise<void> {
   console.log(`\n=== Quality-Lifecycle PoC — ${TARGET_URL} ===\n`);
