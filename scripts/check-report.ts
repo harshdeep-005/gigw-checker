@@ -5,7 +5,7 @@ if (!jobId) { console.error("Usage: npx tsx scripts/check-report.ts <jobId>"); p
 
 const report = await prisma.siteReport.findFirst({
   where: { jobId },
-  include: { pages: { include: { results: { take: 3 } } } },
+  include: { pages: { include: { results: true } } },
 });
 
 if (!report) {

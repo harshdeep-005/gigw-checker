@@ -152,6 +152,9 @@ async function visitPageWithRetry(
         timeout: timeoutMs,
       });
 
+      // Wait briefly for JS frameworks to hydrate and render nav links
+      await page.waitForTimeout(1500);
+
       const httpStatus = response?.status() ?? null;
       const links = await extractLinks(page);
       return { httpStatus, links, status: "crawled" };
