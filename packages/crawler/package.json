@@ -13,6 +13,7 @@
   "dependencies": {
     "playwright": "1.55.1",
     "@gigw/db": "*",
+    "@gigw/queue": "*",
     "dotenv": "16.4.5"
   },
   "devDependencies": {

@@ -51,6 +51,40 @@ npm test                      # all pass
 npm run lint                  # 0 errors
 ```
 
+## Running the project
+
+Open **four terminals** from the project root:
+
+**Terminal 1 — API server** (port 3000):
+```bash
+npm run start:api
+```
+
+**Terminal 2 — Crawl worker** (picks up jobs from CRAWL_QUEUE):
+```bash
+npm run start:crawl-worker
+```
+
+**Terminal 3 — Check worker** (runs all checkers, triggers aggregation):
+```bash
+npm run start:check-worker
+```
+
+**Terminal 4 — Dashboard** (port 5173):
+```bash
+npm run start:dashboard
+```
+
+Then open **http://localhost:5173** in your browser.
+
+Enter a `.gov.in`, `.nic.in`, `.ac.in`, `.res.in`, or `.edu.in` URL and click **Check Site**.
+
+**Two modes:**
+- **Direct check** (instant, single page) — uses `POST /check`, results appear in ~30s
+- **Full crawl** (multi-page) — uses `POST /jobs`, crawls the whole site, results at `/reports/:id`
+
+> Docker (postgres + redis) must be running: `docker compose up -d postgres redis`
+
 **Member A** owns `packages/checkers/accessibility/` and `packages/checkers/cybersecurity/`.
 **Member B** owns `packages/checkers/quality-lifecycle/` and `packages/aggregation/`.
 Shared packages: `packages/crawler/`, `packages/queue/`, `packages/api/`, `packages/db/`, `apps/dashboard/`.

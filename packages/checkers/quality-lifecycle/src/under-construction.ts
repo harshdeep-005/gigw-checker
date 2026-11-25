@@ -21,7 +21,7 @@ const PATTERNS = [
   /page\s+is\s+(?:being\s+)?(?:updated|developed|built)/i,
   /work\s+in\s+progress/i,
   /site\s+(?:is\s+)?under\s+maintenance/i,
-  /निर्माणाधीन/,           // "under construction" in Hindi
+  /निर्माणाधीन/, // "under construction" in Hindi
 ];
 
 export const underConstructionChecker: CheckerModule = {
@@ -38,9 +38,10 @@ export const underConstructionChecker: CheckerModule = {
       pageUrl: ctx.pageUrl,
       status: matchedPattern !== undefined ? "fail" : "pass",
       severity: "low",
-      evidence: matchedPattern !== undefined
-        ? `"Under construction" text detected on page: matched "${String(matchedPattern)}".`
-        : "No 'under construction' or 'coming soon' text detected.",
+      evidence:
+        matchedPattern !== undefined
+          ? `"Under construction" text detected on page: matched "${String(matchedPattern)}".`
+          : "No 'under construction' or 'coming soon' text detected.",
       detail: { matchedPattern: matchedPattern ? String(matchedPattern) : null },
       checkedAt: new Date(),
       pageReportId: null,

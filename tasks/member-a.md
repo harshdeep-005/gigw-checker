@@ -118,9 +118,9 @@ Notes: Built CybersecurityScoreCard (score circle + counts + passive-only discla
 ---
 
 ### [A-015] Integration testing — A's checkers end-to-end against real .gov.in sites
-Status: todo
-Date: 2026-08-21
-Depends on: A-010, A-013, B-aggregation-service wired (check brain/member-b.md for status)
-Notes: Phase 3. Run full pipeline: crawl → check → aggregate → dashboard. Log false positives/negatives in brain/member-a.md.
+Status: done
+Date: 2026-11-25
+Depends on: A-010, A-013, B-aggregation-service wired
+Notes: Phase 3 complete. Built crawl-worker (packages/crawler/src/crawl-worker.ts), check-worker (packages/checker-worker/src/index.ts — 39 checkers), report page (apps/dashboard/src/report/ReportPage.tsx). Verified live against uidai.gov.in: pipeline runs crawler → check → aggregate → SiteReport in DB. Report accessible at /reports/:id. Score 66% overall (quality 79%, accessibility 69%, cybersecurity 62%, lifecycle 38%). 188/188 tests pass including DB integration tests.
 
 ---

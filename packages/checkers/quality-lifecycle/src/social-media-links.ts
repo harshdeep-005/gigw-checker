@@ -45,7 +45,8 @@ export const socialMediaLinksChecker: CheckerModule = {
       evidence = `Only one social media platform linked (${found[0] ?? ""}). GIGW recommends integration with multiple platforms — verify if this is intentional.`;
     } else {
       status = "fail";
-      evidence = "No social media links found. Links to official social media accounts are required.";
+      evidence =
+        "No social media links found. Links to official social media accounts are required.";
     }
 
     const result: CheckerResult = {

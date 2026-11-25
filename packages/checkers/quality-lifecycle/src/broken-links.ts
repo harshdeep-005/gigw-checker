@@ -47,7 +47,9 @@ function extractLinks(html: string, baseUrl: string): string[] {
 /** HEAD-request a URL, return the status code or null on error/timeout. */
 async function headRequest(url: string): Promise<number | null> {
   const controller = new AbortController();
-  const timer = setTimeout(() => { controller.abort(); }, TIMEOUT_MS);
+  const timer = setTimeout(() => {
+    controller.abort();
+  }, TIMEOUT_MS);
   try {
     const res = await fetch(url, {
       method: "HEAD",
@@ -71,17 +73,19 @@ export const brokenLinksChecker: CheckerModule = {
     const links = extractLinks(ctx.html, ctx.pageUrl);
 
     if (links.length === 0) {
-      return [{
-        id: "",
-        clauseId: CLAUSE_ID,
-        pageUrl: ctx.pageUrl,
-        status: "not_applicable",
-        severity: "medium",
-        evidence: "No external or internal links found on this page.",
-        detail: { checked: 0, broken: [] },
-        checkedAt: new Date(),
-        pageReportId: null,
-      }];
+      return [
+        {
+          id: "",
+          clauseId: CLAUSE_ID,
+          pageUrl: ctx.pageUrl,
+          status: "not_applicable",
+          severity: "medium",
+          evidence: "No external or internal links found on this page.",
+          detail: { checked: 0, broken: [] },
+          checkedAt: new Date(),
+          pageReportId: null,
+        },
+      ];
     }
 
     // Check all links concurrently (bounded by the MAX_LINKS cap)
@@ -89,9 +93,7 @@ export const brokenLinksChecker: CheckerModule = {
       links.map(async (url) => ({ url, status: await headRequest(url) })),
     );
 
-    const broken = statuses.filter(
-      (s) => s.status === null || s.status >= 400,
-    );
+    const broken = statuses.filter((s) => s.status === null || s.status >= 400);
 
     const result: CheckerResult = {
       id: "",
@@ -99,9 +101,10 @@ export const brokenLinksChecker: CheckerModule = {
       pageUrl: ctx.pageUrl,
       status: broken.length === 0 ? "pass" : "fail",
       severity: "medium",
-      evidence: broken.length === 0
-        ? `All ${String(links.length)} links checked are reachable.`
-        : `${String(broken.length)} broken link(s) found out of ${String(links.length)} checked: ${broken.map((b) => `${b.url} (${b.status !== null ? String(b.status) : "timeout"})`).join("; ")}`,
+      evidence:
+        broken.length === 0
+          ? `All ${String(links.length)} links checked are reachable.`
+          : `${String(broken.length)} broken link(s) found out of ${String(links.length)} checked: ${broken.map((b) => `${b.url} (${b.status !== null ? String(b.status) : "timeout"})`).join("; ")}`,
       detail: {
         checked: links.length,
         broken: broken.map((b) => ({ url: b.url, status: b.status })),

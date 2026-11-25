@@ -12,7 +12,7 @@ interface ScoreGaugeProps {
 function scoreColour(score: number): string {
   if (score >= 80) return "#16a34a"; // green-600
   if (score >= 50) return "#d97706"; // amber-600
-  return "#dc2626";                  // red-600
+  return "#dc2626"; // red-600
 }
 
 export function ScoreGauge({ score, label, size = 80 }: ScoreGaugeProps): React.JSX.Element {

@@ -52,7 +52,7 @@ export const contactPageChecker: CheckerModule = {
       evidence,
       detail: {
         href: hrefMatch?.[1] ?? null,
-        linkText: (hrefMatch?.[2] ?? textMatch?.[1] ?? null),
+        linkText: hrefMatch?.[2] ?? textMatch?.[1] ?? null,
       },
       checkedAt: new Date(),
       pageReportId: null,

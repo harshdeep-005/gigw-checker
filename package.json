@@ -6,6 +6,7 @@
   "workspaces": [
     "packages/*",
     "packages/checkers/*",
+    "packages/checker-worker",
     "apps/*"
   ],
   "scripts": {
@@ -16,7 +17,11 @@
     "format": "prettier --write \"packages/*/src/**/*.ts\" \"packages/checkers/*/src/**/*.ts\" \"apps/*/src/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"packages/*/src/**/*.ts\" \"packages/checkers/*/src/**/*.ts\" \"apps/*/src/**/*.{ts,tsx}\"",
     "test": "vitest run",
-    "typecheck": "tsc --build"
+    "typecheck": "tsc --build",
+    "start:api": "npx tsx packages/api/src/index.ts",
+    "start:crawl-worker": "npx tsx packages/crawler/src/crawl-worker.ts",
+    "start:check-worker": "npx tsx packages/checker-worker/src/index.ts",
+    "start:dashboard": "npx vite apps/dashboard"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "8.4.0",

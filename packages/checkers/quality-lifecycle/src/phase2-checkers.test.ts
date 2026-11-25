@@ -83,7 +83,9 @@ describe("lastUpdatedChecker — 5.1.5", () => {
   });
 
   it("passes for <time datetime> attribute", async () => {
-    const r = await lastUpdatedChecker.run(makeCtx('<time datetime="2024-03-15">March 2024</time>'));
+    const r = await lastUpdatedChecker.run(
+      makeCtx('<time datetime="2024-03-15">March 2024</time>'),
+    );
     expect(r[0]?.status).toBe("pass");
     expect(r[0]?.detail).toMatchObject({ foundDate: "2024-03-15" });
   });
@@ -297,7 +299,9 @@ describe("feedbackMechanismChecker — 5.1.11", () => {
 
 describe("underConstructionChecker — 5.4.8", () => {
   it("fails for 'under construction'", async () => {
-    const r = await underConstructionChecker.run(makeCtx("<h1>This page is under construction</h1>"));
+    const r = await underConstructionChecker.run(
+      makeCtx("<h1>This page is under construction</h1>"),
+    );
     expect(r[0]?.status).toBe("fail");
   });
 
@@ -354,12 +358,15 @@ describe("bilingualChecker — 5.4.10", () => {
   it("language-selector fails when no Hindi/English toggle found", async () => {
     const html = '<html lang="en"><head><meta charset="UTF-8"></head><body></body></html>';
     const r = await bilingualChecker.run(makeCtx(html));
-    const selector = r.find((x) => (x.detail as { subCheck: string }).subCheck === "language-selector");
+    const selector = r.find(
+      (x) => (x.detail as { subCheck: string }).subCheck === "language-selector",
+    );
     expect(selector?.status).toBe("fail");
   });
 
   it("lang-attribute fails when <html> has no lang", async () => {
-    const html = '<html><head><meta charset="UTF-8"></head><body><a href="/hi">हिन्दी</a></body></html>';
+    const html =
+      '<html><head><meta charset="UTF-8"></head><body><a href="/hi">हिन्दी</a></body></html>';
     const r = await bilingualChecker.run(makeCtx(html));
     const lang = r.find((x) => (x.detail as { subCheck: string }).subCheck === "lang-attribute");
     expect(lang?.status).toBe("fail");

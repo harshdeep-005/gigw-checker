@@ -27,10 +27,19 @@ export function ManualReviewList({ items }: ManualReviewListProps): React.JSX.El
         ⚠ Manual Review Required ({items.length} item{items.length !== 1 ? "s" : ""})
       </h3>
       <p style={{ fontSize: "0.8rem", color: "#78350f", marginBottom: "1rem" }}>
-        These results require human verification — they cannot be determined automatically.
-        They are <strong>not included</strong> in the automated score.
+        These results require human verification — they cannot be determined automatically. They are{" "}
+        <strong>not included</strong> in the automated score.
       </p>
-      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
+      <ul
+        style={{
+          listStyle: "none",
+          padding: 0,
+          margin: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}
+      >
         {items.map((item, i) => (
           <li
             key={`${item.clauseId}-${String(i)}`}

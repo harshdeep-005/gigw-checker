@@ -113,14 +113,18 @@ app.get(
 app.get(
   "/reports/:id",
   async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-    const report = await prisma.siteReport.findUnique({
-      where: { id: request.params.id },
-      include: {
-        pages: {
-          include: { results: true },
-        },
-      },
-    });
+    const { id } = request.params;
+
+    // Try by report ID first, then by job ID (so dashboard can link by jobId)
+    const report =
+      (await prisma.siteReport.findUnique({
+        where: { id },
+        include: { pages: { include: { results: true } } },
+      })) ??
+      (await prisma.siteReport.findFirst({
+        where: { jobId: id },
+        include: { pages: { include: { results: true } } },
+      }));
 
     if (!report) return reply.status(404).send({ error: "Report not found" });
     return report;

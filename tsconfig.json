@@ -12,6 +12,7 @@
     { "path": "packages/report-pdf" },
     { "path": "packages/checkers/accessibility" },
     { "path": "packages/checkers/cybersecurity" },
-    { "path": "packages/checkers/quality-lifecycle" }
+    { "path": "packages/checkers/quality-lifecycle" },
+    { "path": "packages/checker-worker" }
   ]
 }

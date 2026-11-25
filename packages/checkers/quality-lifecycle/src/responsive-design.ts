@@ -19,8 +19,10 @@ import type { CheckerResult } from "@gigw/db";
 const CHECKER_ID = "responsive-design";
 const CLAUSE_ID = "5.1.15";
 
-const VIEWPORT_RE = /<meta\s[^>]*name=["']viewport["'][^>]*content=["'][^"']*width\s*=\s*device-width[^"']*["']/i;
-const VIEWPORT_ALT_RE = /<meta\s[^>]*content=["'][^"']*width\s*=\s*device-width[^"']*["'][^>]*name=["']viewport["']/i;
+const VIEWPORT_RE =
+  /<meta\s[^>]*name=["']viewport["'][^>]*content=["'][^"']*width\s*=\s*device-width[^"']*["']/i;
+const VIEWPORT_ALT_RE =
+  /<meta\s[^>]*content=["'][^"']*width\s*=\s*device-width[^"']*["'][^>]*name=["']viewport["']/i;
 const STYLESHEET_RE = /<link\s[^>]*rel=["']stylesheet["'][^>]*>/i;
 const MEDIA_QUERY_RE = /@media\s*[\w\s,():-]+\{/i;
 
@@ -40,10 +42,12 @@ export const responsiveDesignChecker: CheckerModule = {
 
     if (hasViewport && hasStylesheet && hasMediaQuery) {
       status = "pass";
-      evidence = "Responsive design signals found: viewport meta, external stylesheet, and @media queries present.";
+      evidence =
+        "Responsive design signals found: viewport meta, external stylesheet, and @media queries present.";
     } else if (!hasViewport) {
       status = "fail";
-      evidence = 'Missing <meta name="viewport" content="width=device-width"> — page is not configured for responsive/mobile layout.';
+      evidence =
+        'Missing <meta name="viewport" content="width=device-width"> — page is not configured for responsive/mobile layout.';
     } else {
       status = "needs_review";
       const missing: string[] = [];

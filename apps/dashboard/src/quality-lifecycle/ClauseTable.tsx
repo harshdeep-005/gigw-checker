@@ -81,36 +81,51 @@ export function ClauseTable({ results, title }: ClauseTableProps): React.JSX.Ele
             <>
               <tr
                 key={group.clauseId}
-                style={{ borderTop: "1px solid #e5e7eb", cursor: group.results.length > 1 ? "pointer" : "default" }}
-                onClick={() => { if (group.results.length > 1) toggle(group.clauseId); }}
+                style={{
+                  borderTop: "1px solid #e5e7eb",
+                  cursor: group.results.length > 1 ? "pointer" : "default",
+                }}
+                onClick={() => {
+                  if (group.results.length > 1) toggle(group.clauseId);
+                }}
                 aria-expanded={group.results.length > 1 ? expanded.has(group.clauseId) : undefined}
               >
                 <td style={TD}>
                   <code style={{ fontSize: "0.8rem" }}>{group.clauseId}</code>
                   {group.results.length > 1 && (
                     <span style={{ marginLeft: "4px", color: "#9ca3af", fontSize: "0.75rem" }}>
-                      {expanded.has(group.clauseId) ? "▲" : "▼"} {String(group.results.length)} sub-checks
+                      {expanded.has(group.clauseId) ? "▲" : "▼"} {String(group.results.length)}{" "}
+                      sub-checks
                     </span>
                   )}
                 </td>
-                <td style={TD}><StatusBadge status={group.worstStatus} /></td>
+                <td style={TD}>
+                  <StatusBadge status={group.worstStatus} />
+                </td>
                 <td style={{ ...TD, color: "#374151" }}>
                   {group.results.length === 1
-                    ? group.results[0]?.evidence ?? ""
+                    ? (group.results[0]?.evidence ?? "")
                     : `${String(group.results.filter((r) => r.status === "pass").length)}/${String(group.results.length)} sub-checks pass`}
                 </td>
               </tr>
-              {group.results.length > 1 && expanded.has(group.clauseId) &&
+              {group.results.length > 1 &&
+                expanded.has(group.clauseId) &&
                 group.results.map((r, i) => (
-                  <tr key={`${group.clauseId}-${String(i)}`} style={{ backgroundColor: "#f9fafb", borderTop: "1px solid #f3f4f6" }}>
-                    <td style={{ ...TD, paddingLeft: "2rem", color: "#9ca3af", fontSize: "0.8rem" }}>
+                  <tr
+                    key={`${group.clauseId}-${String(i)}`}
+                    style={{ backgroundColor: "#f9fafb", borderTop: "1px solid #f3f4f6" }}
+                  >
+                    <td
+                      style={{ ...TD, paddingLeft: "2rem", color: "#9ca3af", fontSize: "0.8rem" }}
+                    >
                       └ sub-check {i + 1}
                     </td>
-                    <td style={TD}><StatusBadge status={r.status} /></td>
+                    <td style={TD}>
+                      <StatusBadge status={r.status} />
+                    </td>
                     <td style={{ ...TD, color: "#6b7280" }}>{r.evidence}</td>
                   </tr>
-                ))
-              }
+                ))}
             </>
           ))}
         </tbody>

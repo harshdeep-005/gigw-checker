@@ -137,7 +137,15 @@ function SectionStats({ results }: SectionStatsProps): React.JSX.Element {
   const na = results.filter((r) => r.status === "not_applicable").length;
 
   // Named as a component but kept inline — rename to satisfy naming rule
-  function StatItem({ label, value, color }: { label: string; value: number; color: string }): React.JSX.Element {
+  function StatItem({
+    label,
+    value,
+    color,
+  }: {
+    label: string;
+    value: number;
+    color: string;
+  }): React.JSX.Element {
     return (
       <div style={{ textAlign: "center" }}>
         <div style={{ fontSize: "1.5rem", fontWeight: 700, color }}>{String(value)}</div>

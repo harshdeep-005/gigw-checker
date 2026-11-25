@@ -19,14 +19,14 @@ const CLAUSE_ID = "5.1.2";
 
 const STRONG_SIGNALS = [
   /government\s+of\s+india/i,
-  /भारत\s+सरकार/,            // "Bharat Sarkar" in Devanagari
+  /भारत\s+सरकार/, // "Bharat Sarkar" in Devanagari
   /ministry\s+of\s+/i,
   /department\s+of\s+/i,
   /national\s+(?:authority|commission|board|council|institute)/i,
 ];
 
 const WEAK_SIGNALS = [
-  /\bGo[Ii]\b/,              // "GoI"
+  /\bGo[Ii]\b/, // "GoI"
   /(?:govt|gov)\.in/i,
   /nic\.in/i,
 ];
@@ -52,7 +52,8 @@ export const ownershipInfoChecker: CheckerModule = {
       evidence = `Partial ownership signal found ("${String(weakMatch)}") — verify that ministry/department name is clearly displayed.`;
     } else {
       status = "fail";
-      evidence = "No ownership information detected. Ministry/department name and 'Government of India' should appear on the page.";
+      evidence =
+        "No ownership information detected. Ministry/department name and 'Government of India' should appear on the page.";
     }
 
     const result: CheckerResult = {

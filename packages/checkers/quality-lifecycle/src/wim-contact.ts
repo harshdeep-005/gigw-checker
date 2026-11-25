@@ -36,16 +36,20 @@ export const wimContactChecker: CheckerModule = {
 
     if (wimFound && (emailFound || phoneFound)) {
       status = "needs_review";
-      evidence = "WIM label and contact details detected — verify that the named official holds the required JS-rank and is formally nominated.";
+      evidence =
+        "WIM label and contact details detected — verify that the named official holds the required JS-rank and is formally nominated.";
     } else if (wimFound) {
       status = "needs_review";
-      evidence = "WIM label found but no associated email or phone number detected nearby — verify contact details are complete.";
+      evidence =
+        "WIM label found but no associated email or phone number detected nearby — verify contact details are complete.";
     } else if (emailFound || phoneFound) {
       status = "needs_review";
-      evidence = "Contact details (email/phone) present but no 'Web Information Manager' label — verify WIM is explicitly identified.";
+      evidence =
+        "Contact details (email/phone) present but no 'Web Information Manager' label — verify WIM is explicitly identified.";
     } else {
       status = "fail";
-      evidence = "No WIM label or contact details found. Web Information Manager contact details are required on the site.";
+      evidence =
+        "No WIM label or contact details found. Web Information Manager contact details are required on the site.";
     }
 
     const result: CheckerResult = {

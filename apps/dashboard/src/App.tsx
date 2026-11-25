@@ -1,4 +1,3 @@
-
 import type { JSX } from "react";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import { HomePage } from "./shell/HomePage.js";
@@ -7,6 +6,7 @@ import { AccessibilityReport } from "./accessibility/AccessibilityReport.js";
 import type { ClauseResultData } from "./accessibility/ClauseResultRow.js";
 import { CybersecurityReport } from "./cybersecurity/CybersecurityReport.js";
 import type { CyberClauseResult } from "./cybersecurity/CybersecurityReport.js";
+import { ReportPage } from "./report/ReportPage.js";
 import { QualityLifecyclePage } from "./quality-lifecycle/QualityLifecyclePage.js";
 
 /**
@@ -15,37 +15,22 @@ import { QualityLifecyclePage } from "./quality-lifecycle/QualityLifecyclePage.j
 export function App(): JSX.Element {
   return (
     <BrowserRouter>
-      <header
-        role="banner"
-        style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}
-      >
-        <nav
-          aria-label="Main navigation"
-          style={{ display: "flex", gap: "1rem" }}
-        >
-          <NavLink
-            to="/"
-            style={({ isActive }) =>
-              isActive ? { fontWeight: "bold" } : undefined
-            }
-          >
+      <header role="banner" style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>
+        <nav aria-label="Main navigation" style={{ display: "flex", gap: "1rem" }}>
+          <NavLink to="/" style={({ isActive }) => (isActive ? { fontWeight: "bold" } : undefined)}>
             Home
           </NavLink>
 
           <NavLink
             to="/accessibility"
-            style={({ isActive }) =>
-              isActive ? { fontWeight: "bold" } : undefined
-            }
+            style={({ isActive }) => (isActive ? { fontWeight: "bold" } : undefined)}
           >
             Accessibility
           </NavLink>
 
           <NavLink
             to="/cybersecurity"
-            style={({ isActive }) =>
-              isActive ? { fontWeight: "bold" } : undefined
-            }
+            style={({ isActive }) => (isActive ? { fontWeight: "bold" } : undefined)}
           >
             Cybersecurity
           </NavLink>
@@ -56,20 +41,13 @@ export function App(): JSX.Element {
         <Routes>
           <Route path="/" element={<HomePage />} />
 
-          <Route
-            path="/accessibility"
-            element={<AccessibilityPreview />}
-          />
+          <Route path="/accessibility" element={<AccessibilityPreview />} />
 
-          <Route
-            path="/cybersecurity"
-            element={<CybersecurityPreview />}
-          />
+          <Route path="/cybersecurity" element={<CybersecurityPreview />} />
 
-          <Route
-            path="/reports/:reportId/quality"
-            element={<QualityLifecyclePage />}
-          />
+          <Route path="/reports/:reportId/quality" element={<QualityLifecyclePage />} />
+
+          <Route path="/reports/:id" element={<ReportPage />} />
 
           {/* Additional report routes can be added in later phases. */}
           <Route path="*" element={<NotFoundPage />} />
@@ -141,8 +119,7 @@ function CybersecurityPreview(): JSX.Element {
       clauseId: "5.3.1-code-headers",
       status: "pass",
       severity: "medium",
-      evidence:
-        "Response headers do not disclose server version or technology stack.",
+      evidence: "Response headers do not disclose server version or technology stack.",
       detail: null,
     },
     {
@@ -156,8 +133,7 @@ function CybersecurityPreview(): JSX.Element {
       clauseId: "5.3.2-https",
       status: "pass",
       severity: "high",
-      evidence:
-        "HTTPS is enforced and HSTS header is present. No mixed content detected.",
+      evidence: "HTTPS is enforced and HSTS header is present. No mixed content detected.",
       detail: null,
     },
     {

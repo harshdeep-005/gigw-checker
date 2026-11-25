@@ -33,7 +33,7 @@ export const feedbackMechanismChecker: CheckerModule = {
       id: "",
       clauseId: CLAUSE_ID,
       pageUrl: ctx.pageUrl,
-      status: found ? "needs_review" : (hasForm ? "needs_review" : "fail"),
+      status: found ? "needs_review" : hasForm ? "needs_review" : "fail",
       severity: "low",
       evidence: found
         ? `Feedback/grievance link found: "${(feedbackLink?.[1] ?? grievanceLink?.[1] ?? "").trim()}" — verify that submissions receive timely responses.`

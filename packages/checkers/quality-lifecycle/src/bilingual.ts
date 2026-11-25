@@ -44,11 +44,12 @@ export const bilingualChecker: CheckerModule = {
         id: "",
         clauseId: CLAUSE_ID,
         pageUrl: ctx.pageUrl,
-        status: (hasHindiLink || hasEnglishLink) ? "pass" : "fail",
+        status: hasHindiLink || hasEnglishLink ? "pass" : "fail",
         severity: "medium",
-        evidence: (hasHindiLink || hasEnglishLink)
-          ? `Language selector found (Hindi: ${String(hasHindiLink)}, English: ${String(hasEnglishLink)}).`
-          : "No language selector (Hindi/English toggle) found on the page.",
+        evidence:
+          hasHindiLink || hasEnglishLink
+            ? `Language selector found (Hindi: ${String(hasHindiLink)}, English: ${String(hasEnglishLink)}).`
+            : "No language selector (Hindi/English toggle) found on the page.",
         detail: { subCheck: "language-selector", hasHindiLink, hasEnglishLink },
         checkedAt: now,
         pageReportId: null,
@@ -60,9 +61,10 @@ export const bilingualChecker: CheckerModule = {
         pageUrl: ctx.pageUrl,
         status: langMatch !== null ? "pass" : "fail",
         severity: "medium",
-        evidence: langMatch !== null
-          ? `<html lang="${langMatch[1] ?? ""}"> attribute present.`
-          : "<html> tag is missing the lang attribute.",
+        evidence:
+          langMatch !== null
+            ? `<html lang="${langMatch[1] ?? ""}"> attribute present.`
+            : "<html> tag is missing the lang attribute.",
         detail: { subCheck: "lang-attribute", langValue: langMatch?.[1] ?? null },
         checkedAt: now,
         pageReportId: null,

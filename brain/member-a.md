@@ -131,3 +131,33 @@ Append-only. Never edit past entries. See rules.md for format.
   - Final state: typecheck 0 errors, lint 0 errors, format clean, 118/118 tests pass.
 - Next: A-015 (Phase 3 integration testing) — depends on Member B's aggregation being wired. Check brain/member-b.md for status before starting.
 - Affects shared files: tasks/member-a.md, brain/member-a.md, apps/dashboard/src/App.tsx (route + nav link added).
+
+---
+
+## 2026-11-25 (Phase 3 complete) — Member A
+
+- **Phase 3 COMPLETE** — full pipeline wired: crawler → check worker → aggregation → SiteReport in DB → dashboard.
+
+- Built `packages/crawler/src/crawl-worker.ts` — BullMQ worker that runs `crawl()`, marks job as crawling, enqueues a CheckJob for every crawled route, marks job as checking.
+
+- Built `packages/checker-worker/src/index.ts` — the central integration point. Loads all 39 checkers (15 quality-lifecycle Member B + 17 accessibility Member A + 7 cybersecurity Member A). Runs them all against each page, writes CheckerResult rows to DB using `routeUrl` (not the redirected `page.url()` — critical: URL must match what crawler stored in Route table or aggregation gets zero results). After each page checked, counts DB rows to detect completion and calls `aggregateJob()`. Guards against double-aggregation with status check.
+
+- Built `apps/dashboard/src/report/ReportPage.tsx` — full multi-page SiteReport view: score badges per section, per-page sortable table with expandable results, clause-level evidence per page. Wired into `/reports/:id`.
+
+- Fixed `GET /reports/:id` to also resolve by jobId (so dashboard can link by jobId directly).
+
+- Key bugs fixed during Phase 3:
+  1. Completion detection originally used global BullMQ queue counts — broke with concurrent jobs. Fixed to pure DB count comparison (checked pages vs total crawled routes).
+  2. pageUrl mismatch — checker was storing `page.url()` (redirected URL) but aggregation joins by route URL. Fixed: use `routeUrl` from job payload as pageUrl.
+
+- Verified end-to-end with uidai.gov.in (depthCap:0, pageCap:1):
+  Job cmww38lal0002idev6wpjitt1 → status: done
+  Report cmww390b0003mqj8wlu6otvhi:
+    Overall: 66% | Quality: 79% | Accessibility: 69% | Cybersecurity: 62% | Lifecycle: 38%
+    1 page, 27 pass, 15 fail
+
+- DB integration tests (7) now pass with Docker running — was previously skipped.
+- Final: 188/188 tests pass, typecheck 0 errors, lint 0 errors, format clean.
+
+- Next: Phase 4 — PDF export, manual-review UI (B-014), re-check without re-crawl.
+- Affects shared files: package.json (workspace + scripts), tsconfig.json (references), apps/dashboard/src/App.tsx (report route), README.md (startup instructions).

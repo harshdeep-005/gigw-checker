@@ -21,7 +21,8 @@ const DATE_LABEL_RE =
 
 // Also accept a <time> or <meta> lastmod pattern
 const TIME_TAG_RE = /<time[^>]*datetime=["']([^"']+)["'][^>]*>/i;
-const META_LASTMOD_RE = /<meta[^>]+(?:name=["'](?:last-modified|revised)["'][^>]*content=["']([^"']+)["']|content=["']([^"']+)["'][^>]*name=["'](?:last-modified|revised)["'])/i;
+const META_LASTMOD_RE =
+  /<meta[^>]+(?:name=["'](?:last-modified|revised)["'][^>]*content=["']([^"']+)["']|content=["']([^"']+)["'][^>]*name=["'](?:last-modified|revised)["'])/i;
 
 export const lastUpdatedChecker: CheckerModule = {
   checkerId: CHECKER_ID,

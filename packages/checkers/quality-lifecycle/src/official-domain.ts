@@ -1,4 +1,3 @@
-
 /**
  * Checker: quality-domain
  * Clause: 5.1.21 — The website must be on an official government domain.
@@ -17,11 +16,7 @@
  * Includes the clause ID and checker ID fix to match the seed definition.
  */
 
-import type {
-  CheckerModule,
-  CheckerContext,
-  CheckerResultData,
-} from "./types.js";
+import type { CheckerModule, CheckerContext, CheckerResultData } from "./types.js";
 
 // Must match ClauseDefinition.checkerId in the seed for clause 5.1.21.
 const CHECKER_ID = "quality-domain";
@@ -31,13 +26,7 @@ const CLAUSE_ID = "5.1.21";
  * Accepted TLD suffixes for Indian government and eligible
  * academic/research institution websites.
  */
-const OFFICIAL_DOMAIN_SUFFIXES = [
-  ".gov.in",
-  ".nic.in",
-  ".ac.in",
-  ".res.in",
-  ".edu.in",
-];
+const OFFICIAL_DOMAIN_SUFFIXES = [".gov.in", ".nic.in", ".ac.in", ".res.in", ".edu.in"];
 
 function isOfficialDomain(url: string): boolean {
   try {
@@ -46,9 +35,7 @@ function isOfficialDomain(url: string): boolean {
 
     // Match root domains and their subdomains.
     return OFFICIAL_DOMAIN_SUFFIXES.some(
-      (suffix) =>
-        normalizedHostname === suffix.slice(1) ||
-        normalizedHostname.endsWith(suffix),
+      (suffix) => normalizedHostname === suffix.slice(1) || normalizedHostname.endsWith(suffix),
     );
   } catch {
     return false;
