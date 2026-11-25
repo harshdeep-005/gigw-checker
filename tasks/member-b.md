@@ -116,3 +116,60 @@ Status: todo
 Date: 2026-09-16
 Depends on: B-013
 Notes: Phase 4+5. Adjust severity weights if Phase 3 results look skewed. Wire manual-review items (needs_review results) into a separate checklist section in the dashboard (requirements.md §1.5).
+
+---
+
+### [B-015] Complete §5.1 Quality checkers — missing clauses
+Status: todo
+Date: 2026-11-25
+Depends on: B-005, B-006
+Notes: Phase 2 follow-up. 9 clauses were missing from the original build. Kiro (Member A agent) built stubs for all 9 — review, test, and register in index.ts. Missing clauses and their stub files:
+  - 5.1.6  — download-metadata.ts   (downloadable material: title, size, format, instructions)
+  - 5.1.7  — circular-meta.ts       (circulars/notifications/forms: title, language, purpose, validity)
+  - 5.1.8  — stale-content.ts       (outdated content removed or archived — heuristic)
+  - 5.1.14 — help-link.ts           (help section linked from all pages)
+  - 5.1.16 — no-css-readable.ts     (content readable with style sheets off)
+  - 5.1.18 — min-content.ts         (minimum prescribed homepage content elements)
+  - 5.1.19 — table-markup.ts        (data table markup: th, scope, caption)
+  - 5.1.20 — print-layout.ts        (@media print presence)
+  - 5.1.22 — india-portal-integration.ts (India Portal/DigiLocker/Aadhaar/SSO/MyGov/MyScheme presence)
+  - 5.1.25 — spelling.ts            (spelling/grammar heuristic: placeholder text, repeated words)
+Manual-only by design (do NOT add checkers): 5.1.3, 5.1.4, 5.1.13, 5.1.23.
+All stubs are in packages/checkers/quality-lifecycle/src/ — review logic, add unit tests, register in index.ts.
+
+---
+
+### [B-016] Complete §5.4 Lifecycle checkers — missing clauses
+Status: todo
+Date: 2026-11-25
+Depends on: B-007, B-008
+Notes: Phase 2 follow-up. 4 clauses were missing from the original build. Kiro built stubs — review, test, register. Missing clauses:
+  - 5.4.4 — hyperlink-accuracy.ts     (external links clearly indicated with target=_blank or icon)
+  - 5.4.5 — content-moderation.ts     (no offensive/discriminatory language — keyword heuristic)
+  - 5.4.6 — multilang-sync.ts         (multi-language versions updated simultaneously — lang switcher check)
+  - 5.4.9 — accessible-docs.ts        (PDF links flagged for accessible format verification)
+Manual-only by design (do NOT add checker): 5.4.2.
+All stubs are in packages/checkers/quality-lifecycle/src/ — review logic, add unit tests, register in index.ts.
+
+---
+
+### [B-017] Unit tests for B-015 + B-016 checkers
+Status: todo
+Date: 2026-11-25
+Depends on: B-015, B-016
+Notes: Add unit tests to packages/checkers/quality-lifecycle/src/phase2-checkers.test.ts (or a new B-015-016.test.ts). Each checker needs pass, fail, and needs_review paths tested. Mock CheckerContext pattern: use html string + minimal page stub (see existing phase2-checkers.test.ts). Target: 3-5 tests per checker = ~60-70 new tests.
+
+---
+
+### [B-018] Verify full §5.1 + §5.4 coverage (28 automatable/semi clauses)
+Status: todo
+Date: 2026-11-25
+Depends on: B-015, B-016, B-017
+Notes: After B-015/016 are done, run scripts/integration-test.ts against uidai.gov.in and nitj.ac.in. Confirm:
+  - §5.1: 21 checkers fire (25 total − 4 manual-only)
+  - §5.4: 9 checkers fire (10 total − 1 manual-only)
+  - Total quality-lifecycle checkers: 29 checkers (was 15)
+  - 0 typecheck errors, 0 lint errors, all tests pass
+  Log results in brain/member-b.md.
+
+---
