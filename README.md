@@ -23,8 +23,19 @@ Before touching any code, read (in this order):
 
 ## Status
 
-Phase 1 complete (2026-08-21). Phase 2 (checker development) in progress.
-See tasks/member-a.md and tasks/member-b.md for current task state.
+**Phase 3 complete (2026-11-25).** All checkers built, full pipeline wired, real compliance reports generated and visible in dashboard.
+
+| Phase | Status |
+|---|---|
+| Phase 0 — Docs & scaffold | ✅ Complete |
+| Phase 1 — Core infrastructure | ✅ Complete |
+| Phase 2 — Checker development | ✅ Complete (both members) |
+| Phase 3 — Pipeline integration | ✅ Complete |
+| Phase 4 — PDF + manual-review UI | 🔲 Next |
+| Phase 5 — Real-world testing | 🔲 Pending |
+| Phase 6-7 — Polish, demo | 🔲 Pending |
+
+**Live results (nitj.ac.in, 4 pages):** Overall 51% · Quality 50% · Accessibility 59% · Cybersecurity 34% · Lifecycle 35%
 
 ## Getting started
 

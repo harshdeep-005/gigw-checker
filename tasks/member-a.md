@@ -33,7 +33,7 @@ Notes: package.json (workspaces + scripts), tsconfig.json (root references), tsc
 Status: done
 Date: 2026-08-21
 Depends on: A-003
-Notes: packages/crawler, queue, api, db, aggregation, report-pdf all stubbed with package.json, src/index.ts, tsconfig.json. All packages in workspace (packages/checkers/* glob fixed). @types/node added to all. composite:true on all tsconfigs.
+Notes: packages/crawler, queue, api, db, aggregation, report-pdf all stubbed. packages/checkers/* glob fixed. @types/node added to all. composite:true on all tsconfigs.
 
 ---
 
@@ -49,7 +49,7 @@ Notes: apps/dashboard with Vite + React. src/shell/, src/accessibility/, src/cyb
 Status: done
 Date: 2026-08-21
 Depends on: A-003
-Notes: src/types.ts defines CheckerModule, CheckerContext (with html, page, pageUrl), CheckerFn. src/index.ts exports registry. DOM lib added to tsconfig.
+Notes: src/types.ts defines CheckerModule, CheckerContext, CheckerFn, CheckerResultData. DOM lib added to tsconfig.
 
 ---
 
@@ -57,7 +57,7 @@ Notes: src/types.ts defines CheckerModule, CheckerContext (with html, page, page
 Status: done
 Date: 2026-08-21
 Depends on: A-003
-Notes: Same structure as accessibility. Passive-only constraint documented in index.ts.
+Notes: Passive-only constraint documented in index.ts.
 
 ---
 
@@ -65,7 +65,7 @@ Notes: Same structure as accessibility. Passive-only constraint documented in in
 Status: done
 Date: 2026-08-21
 Depends on: A-006
-Notes: axe-core.ts implemented — 40+ axe rules mapped to 15 GIGW §5.2 clauses. Verified live against uidai.gov.in: 15 results returned (11 pass, 1 fail, 2 needs_review, 1 not_applicable). Real failure: clause 5.2.49 — button without accessible text (.mui-1ig7sdw). All shapes valid. Registered in index.ts. Key fix: pages must be created from browser.newContext(), not browser.newPage() directly. See brain/member-a.md for full notes.
+Notes: axe-core.ts — 40+ axe rules mapped to 15 §5.2 clauses. Verified live against uidai.gov.in. Key fix: pages must be from browser.newContext().
 
 ---
 
@@ -73,7 +73,7 @@ Notes: axe-core.ts implemented — 40+ axe rules mapped to 15 GIGW §5.2 clauses
 Status: done
 Date: 2026-08-21
 Depends on: A-008
-Notes: Covered by axe-core.ts (A-008). All 15 automatable §5.2 clauses are mapped in AXE_RULE_MAP.
+Notes: Covered by axe-core.ts. AXE_CORE_CLAUSE_IDS derived from AXE_RULE_MAP to prevent divergence.
 
 ---
 
@@ -81,7 +81,7 @@ Notes: Covered by axe-core.ts (A-008). All 15 automatable §5.2 clauses are mapp
 Status: done
 Date: 2026-08-21
 Depends on: A-008
-Notes: All 16 checker files built, registered in index.ts, 47 unit tests pass. Files: text-alternatives.ts, captions.ts, keyboard.ts, reflow.ts, link-purpose.ts, headings.ts, colour.ts, images-of-text.ts, text-spacing.ts, motion.ts, flashing.ts, focus-order.ts, language-parts.ts, navigation.ts, error-id.ts, status-messages.ts. Bug sweep also completed: fixed clause IDs in quality-lifecycle checkers, introduced CheckerResultData type (removes id/pageReportId from checker output), crawler null-safe browser/context, robots allow logic, pageCap off-by-one, section scores return null for unevaluated, React.JSX.Element imports. Final: 118/118 tests pass, 0 typecheck errors, 0 lint errors.
+Notes: 16 checker files built and registered. 47 unit tests pass. Files: text-alternatives, captions, keyboard, colour, reflow, images-of-text, text-spacing, motion, flashing, focus-order, link-purpose, headings, language-parts, navigation, error-id, status-messages.
 
 ---
 
@@ -89,7 +89,7 @@ Notes: All 16 checker files built, registered in index.ts, 47 unit tests pass. F
 Status: done
 Date: 2026-08-21
 Depends on: A-009, A-010
-Notes: Built 3 components in apps/dashboard/src/accessibility/: AccessibilityScoreCard (score circle + counts), ClauseResultRow (expandable clause with status/severity/evidence), AccessibilityReport (filterable results list + manual-review checklist with 15 manual-only clauses). Wired into App.tsx routing at /accessibility with sample data preview. All checks pass.
+Notes: AccessibilityReport, AccessibilityScoreCard, ClauseResultRow built. Filterable results + manual-review checklist (15 manual-only clauses). Wired into App.tsx at /accessibility.
 
 ---
 
@@ -97,7 +97,7 @@ Notes: Built 3 components in apps/dashboard/src/accessibility/: AccessibilitySco
 Status: done
 Date: 2026-08-21
 Depends on: A-008
-Notes: Built 3 files: headers.ts (5.3.1-code-headers — Server/X-Powered-By version disclosure), cookies.ts (5.3.1-code-cookies — Secure + HttpOnly flags), tls.ts (5.3.2-tls/https/ciphers — HTTPS enforcement, HSTS, mixed content). All passive only per requirements.md §7. Registered in cybersecurity index.ts. 118/118 tests, 0 errors.
+Notes: headers.ts (5.3.1-code-headers), cookies.ts (5.3.1-code-cookies), tls.ts (5.3.2-tls/https/ciphers). All passive only per §7.
 
 ---
 
@@ -105,7 +105,7 @@ Notes: Built 3 files: headers.ts (5.3.1-code-headers — Server/X-Powered-By ver
 Status: done
 Date: 2026-08-21
 Depends on: A-012
-Notes: Built 4 files: error-page.ts (5.3.1-code-errors — natural 404, stack trace pattern detection), tls-comms.ts (5.3.1-code-tls-comms — 3rd-party HTTP requests via PerformanceObserver), waf.ts (5.3.2-waf — WAF header inference), policies.ts (5.3.3 — privacy/security/contingency policy link detection). All passive only. Registered in cybersecurity index.ts. 118/118 tests, 0 errors.
+Notes: error-page.ts, tls-comms.ts, waf.ts, policies.ts. All passive only per §7.
 
 ---
 
@@ -113,7 +113,7 @@ Notes: Built 4 files: error-page.ts (5.3.1-code-errors — natural 404, stack tr
 Status: done
 Date: 2026-08-21
 Depends on: A-012, A-013
-Notes: Built CybersecurityScoreCard (score circle + counts + passive-only disclaimer) and CybersecurityReport (filterable results + manual-audit checklist with 6 manual-only clause groups). Wired into App.tsx routing at /cybersecurity with sample data preview. All checks pass.
+Notes: CybersecurityReport, CybersecurityScoreCard built. Manual-audit checklist with 6 manual-only clause groups. Wired at /cybersecurity.
 
 ---
 
@@ -121,6 +121,6 @@ Notes: Built CybersecurityScoreCard (score circle + counts + passive-only discla
 Status: done
 Date: 2026-11-25
 Depends on: A-010, A-013, B-aggregation-service wired
-Notes: Phase 3 complete. Built crawl-worker (packages/crawler/src/crawl-worker.ts), check-worker (packages/checker-worker/src/index.ts — 39 checkers), report page (apps/dashboard/src/report/ReportPage.tsx). Verified live against uidai.gov.in: pipeline runs crawler → check → aggregate → SiteReport in DB. Report accessible at /reports/:id. Score 66% overall (quality 79%, accessibility 69%, cybersecurity 62%, lifecycle 38%). 188/188 tests pass including DB integration tests.
+Notes: Phase 3 complete. Built crawl-worker (packages/crawler/src/crawl-worker.ts), check-worker (packages/checker-worker/src/index.ts — 39 checkers from both A and B), report page (apps/dashboard/src/report/ReportPage.tsx). Key fix: check worker must use routeUrl (not page.url()) as pageUrl or aggregation join fails. Key fix: DB-count-based completion detection — no global queue counts. Verified multi-page crawl on nitj.ac.in: 5 routes, 4 checked, 333 results, 4 PageReports, SiteReport scored 51% overall. Dashboard report page verified in headless Playwright: 8/8 checks pass, 0 JS errors. All checkpoints passed.
 
 ---

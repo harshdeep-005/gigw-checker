@@ -161,3 +161,16 @@ Append-only. Never edit past entries. See rules.md for format.
 
 - Next: Phase 4 — PDF export, manual-review UI (B-014), re-check without re-crawl.
 - Affects shared files: package.json (workspace + scripts), tsconfig.json (references), apps/dashboard/src/App.tsx (report route), README.md (startup instructions).
+
+---
+
+## 2026-11-25 (Phase 3 full verification) — Member A
+
+- Multi-page crawl verified: nitj.ac.in job cmww58tj800016plt57r8lbip — 5 routes discovered, 4 checked (1 PDF download failed gracefully), 333 total checker results across 4 pages. SiteReport: 51% overall (quality 50%, accessibility 59%, cybersecurity 34%, lifecycle 35%).
+- Root cause found for single-route crawls on JS-heavy sites: uidai.gov.in hydrates nav links via JS after domcontentloaded, so crawler found 0 links. Fixed by adding 1.5s waitForTimeout after goto in crawler.ts to let frameworks hydrate.
+- Dashboard ReportPage verified in real browser via headless Playwright (scripts/verify-report-page.ts): heading renders, all score badges (51% overall, 59% accessibility, 34% cybersecurity), 4 page rows rendered, expandable rows work, zero JS console errors.
+- GET /reports/:id now resolves by both report ID and job ID.
+- Final state: 188/188 tests, typecheck 0, lint 0, format clean. Phase 3 COMPLETE and fully verified.
+- Known: 9 stale jobs stuck in "checking" status from pre-fix debugging — harmless DB artifacts, can be cleaned with a maintenance script if needed.
+- Next: Phase 4 — PDF export (packages/report-pdf/), manual-review checklist UI, re-check without re-crawl.
+- Affects shared files: crawler.ts (hydration wait), api/index.ts (report lookup by jobId), scripts/verify-report-page.ts (new), scripts/check-report.ts + check-status.ts (new).
